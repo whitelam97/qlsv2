@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorcrean"
+    tools:context=".ThongKeGiangDay">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:orientation="vertical"
+        android:background="@drawable/bg_white"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/txttuan"
+            style="@android:style/Widget.DeviceDefault.TextView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:fontFamily="sans-serif"
+            android:padding="5dp"
+            android:shadowColor="@color/colorAccent"
+            android:text="ĐIỂM DANH SINH VIÊN"
+            android:textAlignment="center"
+            android:textColor="@android:color/holo_red_light"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:paddingBottom="2dp"
+                android:weightSum="3">
+
+                <Button
+                    android:id="@+id/btnhoattat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_row_listview"
+                    android:text="Cập nhật"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <Button
+                    android:id="@+id/btndongtkgd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_row_listview"
+                    android:text="đóng"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+                <CheckBox
+                    android:id="@+id/ckballtkgd"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_row_listview"
+                    android:text="Tất cả"
+                    android:textColor="@android:color/white"
+                    android:textSize="16sp" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <Spinner
+                    android:id="@+id/spnhknh"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1" />
+
+                <Spinner
+                    android:id="@+id/spntuantkd"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2" />
+
+            </LinearLayout>
+
+            <Spinner
+                android:id="@+id/spnlophptkgd"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:layout_weight="1" />
+
+        </LinearLayout>
+
+        <view
+            android:id="@+id/line"
+            class="android.support.v4.view.ViewPager"
+            id="@+id/view"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/colorPrimary" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="5dp">
+
+            <ListView
+                android:id="@+id/lvsvTKGD"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:contextClickable="false"
+                android:divider="#4CAF50"
+                android:dividerHeight="2dp"
+                android:footerDividersEnabled="true"
+                android:headerDividersEnabled="true" />
+        </FrameLayout>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="QUẢN LÝ LỊCH BIỂU GIẢNG DẠY"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+</android.support.constraint.ConstraintLayout>

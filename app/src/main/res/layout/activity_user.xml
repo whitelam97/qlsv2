@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".UserActivity"
+    android:background="@color/colorPrimary"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:background="@drawable/bguser1"
+            android:paddingTop="20dp"
+            android:paddingBottom="10dp"
+            app:srcCompat="@drawable/user3" />
+
+        <TextView
+            android:id="@+id/txtten"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="Trương Quốc Vinh"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtid"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingTop="5dp"
+            android:text="15004047"
+            android:textAlignment="center"
+            android:textColor="@color/colorcrean"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.35" />
+
+            <TextView
+                android:id="@+id/textView8"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Giới tính :"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txtgioitinh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/txdasd"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Khoa:"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/txtngaysinh"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
+            <TextView
+                android:id="@+id/txtdiachi"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/txtgioitinh" />
+
+            <TextView
+                android:id="@+id/textView10"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Ngày sinh :"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/txtngaysinh" />
+
+            <TextView
+                android:id="@+id/txtngaysinh"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toTopOf="@+id/txtdienthoai"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.4"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/txtdiachi" />
+
+            <TextView
+                android:id="@+id/textView11"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Điện thoại :"
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+
+            <TextView
+                android:id="@+id/txtdienthoai"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/txtngaysinh" />
+
+            <TextView
+                android:id="@+id/textView12"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="1"
+                android:paddingLeft="10dp"
+                android:text="Email : "
+                android:textAlignment="viewStart"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/guideline"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+
+            <TextView
+                android:id="@+id/txtemail"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_weight="3"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/guideline"
+                app:layout_constraintTop_toBottomOf="@+id/txtdienthoai" />
+        </android.support.constraint.ConstraintLayout>
+
+        <!--gioitinh-->
+
+        <!--điachi-->
+        <!--Ngaysinh-->
+        <!--dienthoai-->
+        <!--email-->
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayout2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="2dp"
+        android:paddingTop="2dp"
+        android:background="@drawable/bg_white"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="QUẢN LÝ LỊCH BIỂU GIẢNG DẠY"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+</android.support.constraint.ConstraintLayout>

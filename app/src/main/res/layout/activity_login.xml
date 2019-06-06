@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:weightSum="5">
+
+            <android.support.constraint.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="3">
+
+                <TextView
+                    android:id="@+id/txtimage"
+                    android:layout_width="190dp"
+                    android:layout_height="190dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@drawable/logo1"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+            </android.support.constraint.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:gravity="center"
+                android:paddingBottom="60dp"
+                android:paddingLeft="60dp"
+                android:paddingRight="60dp"
+                android:orientation="vertical"
+                >
+
+                <Spinner
+                    android:id="@+id/spnquyen"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="50dp"
+                    android:paddingBottom="20dp"
+                    android:spinnerMode="dialog" />
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+
+                    >
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal"
+                            android:padding="16dp">
+
+                            <EditText
+                                android:id="@+id/user"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:hint="Username"
+                                android:inputType="text"
+                                android:letterSpacing="0.1"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHint="@color/colorPrimaryDark"
+                                android:textSize="16dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:paddingTop="10dp"
+                            android:orientation="horizontal"
+                            android:padding="16dp">
+
+                            <EditText
+                                android:id="@+id/pass"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:background="#00000000"
+                                android:hint="Password"
+                                android:inputType="textPassword"
+                                android:letterSpacing="0.1"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textColorHint="@color/colorPrimaryDark"
+                                android:textSize="16dp" />
+
+                        </LinearLayout>
+
+                        <TextView
+                            android:id="@+id/login"
+                            style="@android:style/Widget.Holo.Light.TextView"
+                            android:layout_width="match_parent"
+                            android:layout_height="50dp"
+                            android:layout_marginTop="20dp"
+                            android:background="@drawable/bg_row_listview"
+                            android:gravity="center"
+                            android:letterSpacing="0.2"
+                            android:text="Login"
+                            android:textColor="@color/white"
+                            android:textSize="18sp"
+                            android:textStyle="bold" />
+
+                    </LinearLayout>
+
+                </FrameLayout>
+
+
+            </LinearLayout>
+
+
+            <TextView
+                android:id="@+id/signup"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:letterSpacing="0.1"
+                android:text="Vinh Long University Of Technology Education"
+                android:textColor="@color/colorAccent"
+                android:textSize="14sp" />
+
+        </LinearLayout>
+
+</RelativeLayout>

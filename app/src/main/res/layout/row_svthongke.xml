@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtSTT"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="13dp"
+        android:layout_marginEnd="8dp"
+        android:text="1"
+        android:textAlignment="viewStart"
+        android:textAllCaps="false"
+        android:textColor="@android:color/black"
+        android:textSize="24sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline6"
+        app:layout_constraintHorizontal_bias="0.375"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txtTenSV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Phạm Thị Thúy Kiều "
+        android:textAlignment="textStart"
+        android:textColor="@android:color/holo_red_light"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.1" />
+
+    <android.support.constraint.Guideline
+        android:id="@+id/guideline9"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.6" />
+
+    <TextView
+        android:id="@+id/txtmssv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:text="15004047"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/txtlopCN"
+        app:layout_constraintStart_toStartOf="@+id/guideline6"
+        app:layout_constraintTop_toBottomOf="@+id/txtTenSV" />
+
+    <TextView
+        android:id="@+id/txtlopCN"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="1CTT15A"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toStartOf="@+id/guideline9"
+        app:layout_constraintStart_toEndOf="@+id/txtmssv"
+        app:layout_constraintTop_toBottomOf="@+id/txtTenSV" />
+
+    <ImageView
+        android:id="@+id/imgcohoc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imgvang"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_check_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imgvang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        app:layout_constraintEnd_toStartOf="@+id/imgphantram"
+        app:layout_constraintStart_toEndOf="@+id/imgcohoc"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_clear_black_24dp" />
+
+    <ImageView
+        android:id="@+id/imgphantram"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/imgvang"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_phantram" />
+
+    <TextView
+        android:id="@+id/txtcohoc"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="55"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/txtvang"
+        app:layout_constraintStart_toStartOf="@+id/guideline9"
+        app:layout_constraintTop_toBottomOf="@+id/imgcohoc" />
+
+    <TextView
+        android:id="@+id/txtvang"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="77"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        android:textAlignment="center"
+        app:layout_constraintEnd_toStartOf="@+id/txtphantram"
+        app:layout_constraintStart_toEndOf="@+id/txtcohoc"
+        app:layout_constraintTop_toBottomOf="@+id/imgvang" />
+
+    <TextView
+        android:id="@+id/txtphantram"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:text="2%"
+        android:textAlignment="center"
+        android:textColor="@android:color/black"
+        android:textSize="14sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txtvang"
+        app:layout_constraintTop_toBottomOf="@+id/imgphantram" />
+
+
+</android.support.constraint.ConstraintLayout>

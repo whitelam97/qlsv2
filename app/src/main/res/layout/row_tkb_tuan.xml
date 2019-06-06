@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/exams_cardview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:cardCornerRadius="5dp"
+        app:cardElevation="5dp">
+
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/layoutdonglophoc"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_row_listview"
+            android:descendantFocusability="afterDescendants"
+            android:orientation="vertical"
+            android:padding="5dp"
+            >
+
+            <TextView
+                android:id="@+id/txttenlophp"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="2dp"
+                android:layout_marginEnd="16dp"
+                android:text="Tên lớp"
+                android:textAlignment="center"
+                android:textAllCaps="true"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/line"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_marginStart="2dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="2dp"
+                android:background="@android:color/black"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/txttenlophp" />
+
+            <TextView
+                android:id="@+id/txttenphong"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="tên giáo viên"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toEndOf="@+id/imgphong"
+                app:layout_constraintTop_toBottomOf="@+id/line" />
+
+            <TextView
+                android:id="@+id/txttiettkb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="tên"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/imgtiet"
+                app:layout_constraintTop_toBottomOf="@+id/txttenphong" />
+
+            <android.support.constraint.Guideline
+                android:id="@+id/guideline2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.50121653" />
+
+            <ImageView
+                android:id="@+id/imgtiet"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="@+id/line"
+                app:layout_constraintTop_toBottomOf="@+id/txttenphong"
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgphong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/line"
+                app:layout_constraintTop_toTopOf="@+id/txttenphong"
+                app:srcCompat="@drawable/ic_place_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgthu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/txttiettkb"
+                app:srcCompat="@drawable/ic_calender" />
+
+            <TextView
+                android:id="@+id/txtthu"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="TextView"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toEndOf="@+id/imgthu"
+                app:layout_constraintTop_toBottomOf="@+id/txttiettkb" />
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</FrameLayout>

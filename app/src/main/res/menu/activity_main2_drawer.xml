@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_user1"
+            android:icon="@drawable/ic_user"
+            android:title="Tài khoản" />
+        <item
+            android:id="@+id/nav_test1"
+            android:icon="@drawable/ic_test"
+            android:title="Thanh tra - Kiểm tra" />
+        <item
+            android:id="@+id/nav_calender1"
+            android:icon="@drawable/ic_assignment_black_24dp"
+            android:title="Theo dõi hoạt động dạy" />
+        <item
+            android:id="@+id/nav_list1"
+            android:icon="@drawable/ic_access_time_black_24dp"
+            android:title="Quản lý giờ giảng" />
+
+    </group>
+
+    <item android:title="Communicate">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_share"
+                android:title="Share" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_send"
+                android:title="Send" />
+        </menu>
+    </item>
+
+</menu>
