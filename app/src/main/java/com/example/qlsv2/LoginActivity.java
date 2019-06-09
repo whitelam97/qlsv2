@@ -61,8 +61,9 @@ public class LoginActivity extends AppCompatActivity {
         mscb = (EditText) findViewById(R.id.user);
         matkhau = (EditText) findViewById(R.id.pass);
         login = (TextView) findViewById(R.id.login);
-        //spnhocky
-       urlquyen =url.getUrl()+"diemdanh/select_quyentruycap.php";
+
+        //spnner quyen
+       urlquyen =url.getUrl()+"diemdanh/Nhomnguoidung.php";
         quyenArrayList=new ArrayList<>();
         spnquyen=findViewById(R.id.spnquyen);
         loadSpinnerData(urlquyen);
@@ -83,8 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                     selecttuan();
                     seMondaytoSundayofWeek();
                 }
-
-
             }
         });
 
