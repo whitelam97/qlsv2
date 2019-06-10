@@ -125,7 +125,7 @@ public class LoginActivity extends AppCompatActivity {
     public void login(final String user, final String pass){
 
         quyen=spnquyen.getSelectedItem().toString();
-        urllogin = url.getUrl()+"diemdanh/login_canbo.php?msCB="+user+"&matkhau="+pass+"&nhomnguoidung="+quyen+"";
+        urllogin = url.getUrl()+"diemdanh/Login.php?msCB="+user+"&matkhau="+pass+"&nhomnguoidung="+quyen+"";
 
         Log.i("Hiteshurl",""+urllogin);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
@@ -202,7 +202,7 @@ public class LoginActivity extends AppCompatActivity {
     }
     //select học kỳ hiện tại
     public void selectHocKy(){
-        urlhocky = url.getUrl()+"diemdanh/select_hocky_now.php";
+        urlhocky = url.getUrl()+"diemdanh/HockyHientai.php";
         Log.i("Hiteshurl",""+urlhocky);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlhocky, new Response.Listener<String>() {
@@ -248,7 +248,8 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences shared= getSharedPreferences("hocky", Context.MODE_PRIVATE);
         String tgbd = shared.getString("thoigianBD", "");
 
-        urltuan = url.getUrl()+"diemdanh/select_tuanhientai.php?thoigianBD="+tgbd+"";
+        urltuan = url.getUrl()+"diemdanh/TuanHientai.php?thoigianBD="+tgbd+"";
+
         Log.i("Hiteshurl",""+urltuan);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urltuan, new Response.Listener<String>() {
@@ -289,7 +290,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedtuan= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
         String stttuan = sharedtuan.getString("sttTuan", "");
 
-        urlmosu = url.getUrl()+"diemdanh/Se_MonDaytoSunDayOFWeek.php?idHK="+idhk+"&sttTuan="+stttuan+"";
+        urlmosu = url.getUrl()+"diemdanh/MonToSunofNow.php?idHK="+idhk+"&sttTuan="+stttuan+"";
         Log.i("Hiteshurl",""+urlmosu);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlmosu, new Response.Listener<String>() {

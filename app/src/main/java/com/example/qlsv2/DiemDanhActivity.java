@@ -1,6 +1,7 @@
 package com.example.qlsv2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -50,9 +51,9 @@ public class DiemDanhActivity extends AppCompatActivity {
 
     Button btnhoantat, btndong;
     CheckBox checkall;
-    String urlthemsv=url.getUrl()+"diemdanh/insert_SinhVienDiemDanh.php";
-    String urlxoasv=url.getUrl()+"diemdanh/delete_SinhVienDiemDanh.php";
-    String urlupdatedd=url.getUrl()+"diemdanh/Update_TinhTrang_Thoigian.php";
+    String urlthemsv=url.getUrl()+"diemdanh/DiemDanh.php";
+    String urlxoasv=url.getUrl()+"diemdanh/XoaDiemDanhSV.php";
+    String urlupdatedd=url.getUrl()+"diemdanh/SetTinhTrangTGTKB.php";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,6 +71,7 @@ public class DiemDanhActivity extends AppCompatActivity {
         idTKB = shared.getString("idtkb", "");
         sttTuan = shared.getString("stttuan", "");
 
+
         //nut back
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -81,10 +83,9 @@ public class DiemDanhActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJsonCheckSV().execute(url.getUrl() + "diemdanh/se_CheckDiemDanh.php?idTKB="+idTKB+"");
+                new docJsonCheckSV().execute(url.getUrl()+"diemdanh/SinhVienDaDiemdanh.php?idTKB="+idTKB+"");
             }
         });
-
 
         //load lisview sinh viên từ csdl lên
         lvsv = findViewById(R.id.lvsv);
@@ -92,7 +93,7 @@ public class DiemDanhActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJson().execute(url.getUrl() + "diemdanh/se_sv_diemdanh.php?idlopHP=" + idlopHP +"");
+                new docJson().execute(url.getUrl() + "diemdanh/DanhSachSVThuocLopHP.php?idlopHP="+idlopHP+"");
             }
         });
 
@@ -125,7 +126,7 @@ public class DiemDanhActivity extends AppCompatActivity {
         {
             @Override
             public void onClick(View v) {
-                finish();
+               finish();
             }
         });
 
@@ -145,7 +146,9 @@ public class DiemDanhActivity extends AppCompatActivity {
                 }
                 //upate tinh trang thoi gin diem danh
                 UpdateTinhtrangTGDiemDanh(urlupdatedd);
-                finish();
+                Intent i = new Intent(DiemDanhActivity.this, Main2Activity.class);
+                finish();  //Kill the activity from which you will go to next activity
+                startActivity(i);
             }
         });
     }
@@ -201,7 +204,7 @@ public class DiemDanhActivity extends AppCompatActivity {
                 lvsv.setAdapter(sinhVienAdapter);
 
             } catch (JSONException e) {
-//                Toast.makeText(DiemDanhActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(DiemDanhActivity.this, "Lỗi "+e.toString(), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -222,8 +225,10 @@ public class DiemDanhActivity extends AppCompatActivity {
                     JSONObject lh= mang.getJSONObject(i);
                     svcheckArrayList.add(i,lh.getString("idSV"));
                 }
+//                Toast.makeText(DiemDanhActivity.this, svcheckArrayList.size()+"", Toast.LENGTH_SHORT).show();
+
             } catch (JSONException e) {
-//                Toast.makeText(DiemDanhActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(DiemDanhActivity.this, "Lỗi check SV", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -257,8 +262,7 @@ public class DiemDanhActivity extends AppCompatActivity {
         }
         return stringBuilder.toString();
     }
-
-    //them xóa sv(điểm danh)
+    //them  sv(điểm danh)
     private void themsv(String urladdsv, final String getidsv, final String getidtkb){
         RequestQueue requestQueue =Volley.newRequestQueue(this);
         StringRequest stringRequest= new StringRequest(Request.Method.POST,urladdsv,
@@ -290,7 +294,7 @@ public class DiemDanhActivity extends AppCompatActivity {
         };
         requestQueue.add(stringRequest);
     }
-    //them xóa sv(điểm danh)
+
     private void UpdateTinhtrangTGDiemDanh(String urlUpdateTTTG){
         RequestQueue requestQueue =Volley.newRequestQueue(this);
         StringRequest stringRequest= new StringRequest(Request.Method.POST,urlUpdateTTTG,
@@ -301,7 +305,7 @@ public class DiemDanhActivity extends AppCompatActivity {
                             Toast.makeText(DiemDanhActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                         }
                         else
-                            Toast.makeText(DiemDanhActivity.this, "Điểm danh lỗi lỗi!", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(DiemDanhActivity.this, "Điểm danh lỗi!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener(){

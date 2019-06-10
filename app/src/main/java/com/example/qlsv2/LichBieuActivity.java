@@ -42,7 +42,7 @@ import java.util.Arrays;
 public class LichBieuActivity extends AppCompatActivity {
     Spinner spnhocky1,spntuan;
     com.example.qlsv2.Class.url url= new url();
-    String URLhocky=url.getUrl()+"diemdanh/select_hocky.php";
+    String URLhocky=url.getUrl()+"diemdanh/HocKy.php";
     String urltuan;
 
     ArrayList<String> hockyArrayList;
@@ -74,6 +74,8 @@ public class LichBieuActivity extends AppCompatActivity {
         //lấy tuần hiện tại
         SharedPreferences shared1= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
         final String tuan = shared1.getString("tuanht", "");
+        final String tuanstt = shared1.getString("sttTuan", "");
+
         SharedPreferences shared4= getSharedPreferences("mondaytosundaynow", Context.MODE_PRIVATE);
         final String monday = shared4.getString("monday", "");
         final String sunday = shared4.getString("sunday", "");
@@ -96,7 +98,7 @@ public class LichBieuActivity extends AppCompatActivity {
                 String hki =outpu[2];
                 String namhoc=outpu[6];
                 tuanArrayList= new ArrayList<>();
-                urltuan =url.getUrl()+"diemdanh/se_TuanBDandTuanKT_thucte.php?hk="+hki+"&nh="+namhoc+"";
+                urltuan =url.getUrl()+"diemdanh/TuanBDTuanKT.php?hk="+hki+"&nh="+namhoc+"";
                 loadSpinnertuan(urltuan);
                 spntuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -118,9 +120,9 @@ public class LichBieuActivity extends AppCompatActivity {
                         SharedPreferences shared6= getSharedPreferences("tuandbkt", Context.MODE_PRIVATE);
                         final String tuabd = shared6.getString("tuanBD", "");
                         int bd= Integer.parseInt(tuabd);
-                        int st =Integer.parseInt(sotuan[1])-bd+1;
+                        int st =Integer.parseInt(sotuan[1])-bd;
 //                Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
-                        final String  URLtkbtuan1= url.getUrl()+"diemdanh/select_tkbtuan.php?idCB="+idCB+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
+                        final String  URLtkbtuan1= url.getUrl()+"diemdanh/LichBieuTuan.php?idCB="+idCB+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -134,7 +136,7 @@ public class LichBieuActivity extends AppCompatActivity {
                         // DO Nothing here
                         // Đổ dữ liệu ra lisview lich bieu hien tai
                         tkb_tuanArrayList = new ArrayList<tkb_tuan>();
-                        final String  URLtkbtuan= url.getUrl()+"diemdanh/selectTKB_TuanHienTai.php?idCB="+idcb+"&thoigianBD="+tgbd+"&idHK="+idhk+"";
+                        final String  URLtkbtuan= url.getUrl()+"diemdanh/LichBieuTuanHienTai.php?idCB="+idcb+"&sttTuan="+tuanstt+"&idHK="+idhk+"";
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
@@ -150,7 +152,7 @@ public class LichBieuActivity extends AppCompatActivity {
                 String hk ="7";
                 String namhoc="2018-2019";
                 tuanArrayList= new ArrayList<>();
-                urltuan =url.getUrl()+"diemdanh/se_TuanBDandTuanKT_thucte.php?hk="+hk+"&nh="+namhoc+"";
+                urltuan =url.getUrl()+"diemdanh/TuanBDTuanKT.php?hk="+hk+"&nh="+namhoc+"";
                 loadSpinnertuan(urltuan);
             }
         });
@@ -173,6 +175,7 @@ public class LichBieuActivity extends AppCompatActivity {
                     JSONObject jsonObject1=jsonArray.getJSONObject(0);
                     String tuanbd=jsonObject1.getString("tuanBD");
                     String tuankt=jsonObject1.getString("tuanKT");
+
                     SharedPreferences shared = getSharedPreferences("tuandbkt", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = shared.edit();
                     editor.putString("tuanBD",tuanbd);

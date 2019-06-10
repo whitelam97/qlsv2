@@ -116,7 +116,7 @@ public class Main2Activity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/select_tkbthanhtra_ngayhientai.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
         //click item listview
@@ -237,8 +237,6 @@ public class Main2Activity extends AppCompatActivity
         return stringBuilder.toString();
 
     }
-
-
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);

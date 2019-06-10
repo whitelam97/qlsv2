@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJson().execute(url.getUrl()+"diemdanh/select_tkb_ngayhientai.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
+                new docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayCB.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
         //click listview

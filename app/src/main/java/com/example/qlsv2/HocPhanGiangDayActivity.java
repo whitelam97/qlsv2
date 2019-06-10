@@ -37,7 +37,7 @@ import java.util.ArrayList;
 public class HocPhanGiangDayActivity extends AppCompatActivity {
     Spinner spnhocky;
     com.example.qlsv2.Class.url url= new url();
-    String URLhocky=url.getUrl()+"diemdanh/select_hocky.php";
+    String URLhocky=url.getUrl()+"diemdanh/HocKy.php";
     ArrayList<String> hockyArrayList;
 
     ArrayList<hocphan> hocphanArrayList;
@@ -81,7 +81,7 @@ public class HocPhanGiangDayActivity extends AppCompatActivity {
         String namhoc=output[6];
         SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
         String idCB = shared.getString("idCB", "");
-        final String  URLhp= url.getUrl()+"diemdanh/se_hocphangiangday.php?idCB="+idCB+"&hocky="+hk+"&namhoc="+namhoc+"";
+        final String  URLhp= url.getUrl()+"diemdanh/LopHocPhanGiangDay.php?idCB="+idCB+"&hocky="+hk+"&namhoc="+namhoc+"";
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
