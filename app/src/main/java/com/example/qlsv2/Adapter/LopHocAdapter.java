@@ -79,6 +79,7 @@ public class LopHocAdapter extends BaseAdapter {
         }
         if (tt==1){
             viewHolder.tvtinhtrang.setText("Đã điểm danh");
+
         }
         if (tt==0){
             viewHolder.tvtinhtrang.setText("Chưa điểm danh");
@@ -86,6 +87,7 @@ public class LopHocAdapter extends BaseAdapter {
         if (tt==2){
             viewHolder.tvtinhtrang.setText("Đã khóa");
         }
+
 
         //xuly diem danh
         String pattern = "HH:mm";
@@ -98,17 +100,26 @@ public class LopHocAdapter extends BaseAdapter {
             Date ht =sdf.parse(t);
 
             if(ht.after(star)&&ht.before(end)) {
-                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_rowlv_red);
+                //đang dien ra
+                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lopdangdienra);
                 if (tt!=1)  viewHolder.tvtinhtrang.setText("Chưa điểm danh");
+                else if(tt==1)  viewHolder.constraintLayout.setBackgroundResource(R.drawable.br_row_dadiemdanh);
+
 
             }
             if (star.before(ht)&&end.before(ht)) {
-                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_rowlistview_yello);
+                //đã khóa
+                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_dakhoa);
                 if (tt!=1) viewHolder.tvtinhtrang.setText("Đã khóa");
 
             }
             if (ht.before(star)){
-                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_listview);
+                //chưa mở
+                String loailpHP= contact.getLoailopHP();
+                if (loailpHP.equals("TH")){
+                    viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lythuyet);
+                }
+                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_thuchanh);
 //                viewHolder.listView.getChildAt( position).setEnabled(false);
                 viewHolder.tvtinhtrang.setText("Chưa mở");
 

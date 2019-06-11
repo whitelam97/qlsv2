@@ -48,7 +48,6 @@
             android:id="@+id/spntinhtrang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:contextClickable="false"
             android:textAlignment="viewEnd"
             android:textStyle="bold" />
 
