@@ -146,9 +146,8 @@ public class DiemDanhActivity extends AppCompatActivity {
                 }
                 //upate tinh trang thoi gin diem danh
                 UpdateTinhtrangTGDiemDanh(urlupdatedd);
-                Intent i = new Intent(DiemDanhActivity.this, Main2Activity.class);
-                finish();  //Kill the activity from which you will go to next activity
-                startActivity(i);
+                Toast.makeText(DiemDanhActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                finish();
             }
         });
     }
@@ -270,10 +269,10 @@ public class DiemDanhActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(DiemDanhActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(DiemDanhActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                         }
-                        else
-                            Toast.makeText(DiemDanhActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+//                        else
+//                            Toast.makeText(DiemDanhActivity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener(){
@@ -302,10 +301,10 @@ public class DiemDanhActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         if(response.equals("success")){
-                            Toast.makeText(DiemDanhActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+//                            Toast.makeText(DiemDanhActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                         }
-                        else
-                            Toast.makeText(DiemDanhActivity.this, "Điểm danh lỗi!", Toast.LENGTH_SHORT).show();
+//                        else
+//                            Toast.makeText(DiemDanhActivity.this, "Điểm danh lỗi!", Toast.LENGTH_SHORT).show();
                     }
                 },
                 new Response.ErrorListener(){

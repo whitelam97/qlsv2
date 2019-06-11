@@ -315,4 +315,23 @@ public class Main2Activity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //Đổ dữ liệu ra lisview thoikhoabieu
+        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+        final String hkht = shared1.getString("idHK", "");
+        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+        final String tuan = shared2.getString("sttTuan", "");
+        final String tuanhtai = shared2.getString("tuanht", "");
+        listView = findViewById(R.id.lvlophoc);
+        lophocArrayList = new ArrayList<lophoc>();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+            }
+        });
+    }
 }

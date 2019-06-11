@@ -46,8 +46,8 @@ public class QuanLyGioGiang extends AppCompatActivity {
     ArrayList<String> CBArrayList;
     ArrayList<String> hkArrayList;
     ArrayList<String> tuanArrayList;
-    String urlDvi=url.getUrl()+"diemdanh/select_DonVi.php";
-    String URLhocky=url.getUrl()+"diemdanh/select_hocky.php";
+    String urlDvi=url.getUrl()+"diemdanh/DonVi.php";
+    String URLhocky=url.getUrl()+"diemdanh/HocKy.php";
     String urlCB;
     String urltuan;
     ListView listViewQLGG;
@@ -100,7 +100,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                 String[] out = s.split(" ");
                 String idDvi =out[0];
                 CBArrayList= new ArrayList<>();
-                urlCB=url.getUrl()+"diemdanh/se_CBbyDvi.php?idDvi="+idDvi+"";
+                urlCB=url.getUrl()+"diemdanh/TenCBTheoDVi.php?idDvi="+idDvi+"";
                 loadSpinnerCB(urlCB);
                 spncanbo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -116,7 +116,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                                 String hki =outpu[2];
                                 String namhoc=outpu[6];
                                 tuanArrayList= new ArrayList<>();
-                                urltuan =url.getUrl()+"diemdanh/se_TuanBDandTuanKT_thucte.php?hk="+hki+"&nh="+namhoc+"";
+                                urltuan =url.getUrl()+"diemdanh/TuanBDTuanKT.php?hk="+hki+"&nh="+namhoc+"";
                                 loadSpinnertuan(urltuan);
 
                                 spntuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -131,7 +131,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                                         SharedPreferences shared9= getSharedPreferences("canbo", Context.MODE_PRIVATE);
                                         final String idcb = shared9.getString("idCB", "");
                                         tkbQlggTuanArrayList = new ArrayList<tkb_tuan>();
-                                        final String  URLtkbtuan= url.getUrl()+"diemdanh/selectTKB_TuanHienTai.php?idCB="+idcb+"&thoigianBD="+tgbd+"&idHK="+idhk+"";
+                                        final String  URLtkbtuan= url.getUrl()+"diemdanh/LichBieuTuanHienTai.php?idCB="+idcb+"&sttTuan="+tuan+"&idHK="+idhk+"";
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
@@ -148,7 +148,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                                 String hk ="7";
                                 String namhoc="2018-2019";
                                 tuanArrayList= new ArrayList<>();
-                                urltuan =url.getUrl()+"diemdanh/se_TuanBDandTuanKT_thucte.php?hk="+hk+"&nh="+namhoc+"";
+                                urltuan =url.getUrl()+"diemdanh/TuanBDTuanKT.php?hk="+hk+"&nh="+namhoc+"";
                                 loadSpinnertuan(urltuan);
                             }
                         });
@@ -167,7 +167,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                 // DO Nothing here
                 String idDvi ="1";
                 CBArrayList= new ArrayList<>();
-                urlCB=url.getUrl()+"diemdanh/se_CBbyDvi.php?idDvi="+idDvi+"";
+                urlCB=url.getUrl()+"diemdanh/TenCBTheoDVi.php?idDvi="+idDvi+"";
                 loadSpinnerCB(urlCB);
             }
         });
@@ -195,7 +195,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
         int bd= Integer.parseInt(tuabd);
         int st =Integer.parseInt(sotuan[1])-bd+1;
 //                Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
-        final String  urlQlggTuan= url.getUrl()+"diemdanh/select_TKBTuanByHotenCB.php?hotenCB="+hotencb+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
+        final String  urlQlggTuan= url.getUrl()+"diemdanh/LichBieuTuanTheoTenCB.php?hotenCB="+hotencb+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -203,6 +203,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
             }
         });
     }
+
     private void loadSpinnerDvi(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -390,7 +391,6 @@ public class QuanLyGioGiang extends AppCompatActivity {
         return stringBuilder.toString();
 
     }
-
     //nut back
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
