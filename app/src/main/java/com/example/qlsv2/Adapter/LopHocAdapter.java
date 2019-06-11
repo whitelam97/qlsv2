@@ -70,7 +70,7 @@ public class LopHocAdapter extends BaseAdapter {
         lophoc contact = arrContact.get(position);
         viewHolder.tvlop.setText(contact.getTenlopHP());
         viewHolder.tvgiaovien.setText(contact.getHotenCB());
-        viewHolder.tvphong.setText(contact.getTenPhong());
+        viewHolder.tvphong.setText(contact.getMsPhong()+" - "+contact.getTenDvi());
 
         //xuly tinhtrang
         int tt=Integer.parseInt(contact.getTinhtrang());

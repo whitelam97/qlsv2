@@ -202,7 +202,9 @@ public class MainActivity extends AppCompatActivity
                             lh.getString("thoigianBD"),
                             lh.getString("thoigianKT"),
                             lh.getString("tgbd"),
-                            lh.getString("tgkt")
+                            lh.getString("tgkt"),
+                            lh.getString("tenDvi")
+
                     ));
                 }
                 LopHocAdapter listadapter= new LopHocAdapter(
@@ -280,11 +282,24 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            //Đổ dữ liệu ra lisview thoikhoabieu
+            SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
+            final String idCB = shared.getString("idCB", "");
+            SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+            final String hkht = shared1.getString("idHK", "");
+            SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+            final String tuan = shared2.getString("sttTuan", "");
+            final String tuanhtai = shared2.getString("tuanht", "");
+            listView = findViewById(R.id.lvlophoc);
+            lophocArrayList = new ArrayList<lophoc>();
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    new docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayCB.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
+                }
+            });
         }
-        if (id == R.id.action_view) {
-            return true;
-        }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -317,5 +332,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
 
 }

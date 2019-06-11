@@ -33,6 +33,7 @@ public class lophoc {
         private String thoigianKT;
         private String tgbd;
         private String tgkt;
+        private String tenDvi;
 
     public lophoc(String idTKB, String sttTuan,
                   String thu, String tietBD, String sotiet,
@@ -42,7 +43,7 @@ public class lophoc {
                   String tenlopHP, String loailopHP, String soSV, String tuanhoc,
                   String msPhong, String tenPhong, String nhahoc, String sttTang,
                   String loaiPhong, String idHK, String msHK, String hocky, String namhoc,
-                  String thoigianBD, String thoigianKT,String tgbd,String tgkt) {
+                  String thoigianBD, String thoigianKT,String tgbd,String tgkt,String tenDvi) {
         this.idTKB = idTKB;
         this.sttTuan = sttTuan;
         this.thu = thu;
@@ -75,7 +76,16 @@ public class lophoc {
         this.thoigianKT = thoigianKT;
         this.tgbd=tgbd;
         this.tgkt=tgkt;
+        this.tenDvi=tenDvi;
 
+    }
+
+    public String getTenDvi() {
+        return tenDvi;
+    }
+
+    public void setTenDvi(String tenDvi) {
+        this.tenDvi = tenDvi;
     }
 
     public String getTgbd() {

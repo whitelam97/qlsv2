@@ -1,11 +1,13 @@
 package com.example.qlsv2;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v7.app.AlertDialog;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,7 +18,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +54,14 @@ public class Main2Activity extends AppCompatActivity
     ListView listView;
     ArrayList<lophoc> lophocArrayList;
     com.example.qlsv2.Class.url url= new url();
+
+    String arrtinhtrang[]={
+            "Tất cả",
+            "Chưa mở",
+            "Chưa điểm danh",
+            "Đã điểm danh",
+            "Đã khóa"
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -109,6 +121,23 @@ public class Main2Activity extends AppCompatActivity
         //set textview tuan hien tai
         txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
+
+
+        //load Spinner tinh trang
+        Spinner spntinhtrang= findViewById(R.id.spntinhtrang);
+        //Gán Data source (arr) vào Adapter
+        ArrayAdapter<String> adapter=new ArrayAdapter<String>
+                (
+                        this,
+                        android.R.layout.simple_spinner_item,
+                        arrtinhtrang
+                );
+        //phải gọi lệnh này để hiển thị danh sách cho Spinner
+        adapter.setDropDownViewResource
+                (android.R.layout.simple_list_item_single_choice);
+        //Thiết lập adapter cho Spinner
+        spntinhtrang.setAdapter(adapter);
+
 
 
         listView = findViewById(R.id.lvlophoc);
@@ -202,8 +231,10 @@ public class Main2Activity extends AppCompatActivity
                             lh.getString("thoigianBD"),
                             lh.getString("thoigianKT"),
                             lh.getString("tgbd"),
-                            lh.getString("tgkt")
-                    ));
+                            lh.getString("tgkt"),
+                            lh.getString("tenDvi")
+
+                            ));
                 }
                 LopHocAdapter listadapter= new LopHocAdapter(
                         getApplicationContext(),
@@ -273,18 +304,56 @@ public class Main2Activity extends AppCompatActivity
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_find) {
+            showAlertDialog();
+            return true;
+        }else
+            if (id == R.id.action_reset) {
+                    //Đổ dữ liệu ra lisview thoikhoabieu
+                    SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+                    final String hkht = shared1.getString("idHK", "");
+                    SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+                    final String tuan = shared2.getString("sttTuan", "");
+                    final String tuanhtai = shared2.getString("tuanht", "");
+                    listView = findViewById(R.id.lvlophoc);
+                    lophocArrayList = new ArrayList<lophoc>();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                        }
+                    });
+
             return true;
         }
 
         return super.onOptionsItemSelected(item);
     }
+    public void showAlertDialog(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("ThangCoder.Com");
+        builder.setMessage("Bạn có muốn đăng xuất không?");
+        //khoongcho click bên ngoài hop thoi
+        builder.setCancelable(false);
+        builder.setPositiveButton("Ứ chịu", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                Toast.makeText(Main2Activity.this, "Không thoát được", Toast.LENGTH_SHORT).show();
+            }
+        });
+        builder.setNegativeButton("Đăng xuất", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                dialogInterface.dismiss();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+
+    }
+
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -316,22 +385,4 @@ public class Main2Activity extends AppCompatActivity
         return true;
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        //Đổ dữ liệu ra lisview thoikhoabieu
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
-        final String tuanhtai = shared2.getString("tuanht", "");
-        listView = findViewById(R.id.lvlophoc);
-        lophocArrayList = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
-            }
-        });
-    }
 }
