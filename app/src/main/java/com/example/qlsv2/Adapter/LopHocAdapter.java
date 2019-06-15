@@ -68,7 +68,7 @@ public class LopHocAdapter extends BaseAdapter {
             viewHolder = (ViewHolder) convertView.getTag();
         }
         lophoc contact = arrContact.get(position);
-        viewHolder.tvlop.setText(contact.getTenlopHP());
+        viewHolder.tvlop.setText(contact.getTinhtrang()+contact.getTenlopHP());
         viewHolder.tvgiaovien.setText(contact.getHotenCB());
         viewHolder.tvphong.setText(contact.getMsPhong()+" - "+contact.getTenDvi());
 

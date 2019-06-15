@@ -57,13 +57,15 @@ public class LoginActivity extends AppCompatActivity {
                 matkhau.setText("30e25409a9c409f0bddd0ccbf2700145");
             }
         });
+
+
         signup = (TextView) findViewById(R.id.signup);
         mscb = (EditText) findViewById(R.id.user);
         matkhau = (EditText) findViewById(R.id.pass);
         login = (TextView) findViewById(R.id.login);
 
         //spnner quyen
-       urlquyen =url.getUrl()+"diemdanh/Nhomnguoidung.php";
+        urlquyen =url.getUrl()+"diemdanh/Nhomnguoidung.php";
         quyenArrayList=new ArrayList<>();
         spnquyen=findViewById(R.id.spnquyen);
         loadSpinnerData(urlquyen);
@@ -123,10 +125,8 @@ public class LoginActivity extends AppCompatActivity {
     }
     //đăng nhập
     public void login(final String user, final String pass){
-
         quyen=spnquyen.getSelectedItem().toString();
         urllogin = url.getUrl()+"diemdanh/Login.php?msCB="+user+"&matkhau="+pass+"&nhomnguoidung="+quyen+"";
-
         Log.i("Hiteshurl",""+urllogin);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urllogin, new Response.Listener<String>() {
@@ -183,10 +183,12 @@ public class LoginActivity extends AppCompatActivity {
                             startActivity(intent1);
                             break;
                         }
+                        default:
+                            Toast.makeText(LoginActivity.this, "Bạn Không có quyền truy cập !", Toast.LENGTH_SHORT).show();
                     }
 
                 } catch (JSONException e) {
-                    mscb.setText(e.toString());
+                    Toast.makeText(LoginActivity.this, "Tài khoản không đúng!", Toast.LENGTH_SHORT).show();
                     e.printStackTrace();
                 }
             }
@@ -196,10 +198,9 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("HiteshURLerror",""+error);
             }
         });
-
         requestQueue.add(stringRequest);
-
     }
+
     //select học kỳ hiện tại
     public void selectHocKy(){
         urlhocky = url.getUrl()+"diemdanh/HockyHientai.php";

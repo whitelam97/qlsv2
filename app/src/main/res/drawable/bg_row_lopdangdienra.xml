@@ -19,7 +19,7 @@
             <!--android:startColor="#FF5722"-->
             <!--android:endColor="#F44336"/>-->
             <solid
-                android:color="#EE8C8C" />
+                android:color="#EEE27C" />
         </shape>
     </item>
 </selector>

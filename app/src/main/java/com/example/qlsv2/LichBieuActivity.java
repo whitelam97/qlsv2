@@ -121,8 +121,9 @@ public class LichBieuActivity extends AppCompatActivity {
                         final String tuabd = shared6.getString("tuanBD", "");
                         int bd= Integer.parseInt(tuabd);
                         int st =Integer.parseInt(sotuan[1])-bd;
-//                Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
+//                      Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
                         final String  URLtkbtuan1= url.getUrl()+"diemdanh/LichBieuTuan.php?idCB="+idCB+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
+
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {

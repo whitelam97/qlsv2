@@ -234,6 +234,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
         stringRequest.setRetryPolicy(policy);
         requestQueue.add(stringRequest);
     }
+
     private void loadSpinnerCB(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
