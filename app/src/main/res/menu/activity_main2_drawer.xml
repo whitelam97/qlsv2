@@ -9,14 +9,6 @@
             android:icon="@drawable/ic_user"
             android:title="Tài khoản" />
         <item
-            android:id="@+id/nav_test1"
-            android:icon="@drawable/ic_test"
-            android:title="Thanh tra - Kiểm tra" />
-        <item
-            android:id="@+id/nav_calender1"
-            android:icon="@drawable/ic_assignment_black_24dp"
-            android:title="Theo dõi hoạt động dạy" />
-        <item
             android:id="@+id/nav_list1"
             android:icon="@drawable/ic_access_time_black_24dp"
             android:title="Quản lý giờ giảng" />

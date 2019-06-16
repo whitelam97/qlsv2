@@ -111,7 +111,7 @@ public class LopHocAdapter extends BaseAdapter {
                 //đã khóa
                 viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_dakhoa);
                 if (tt!=1) viewHolder.tvtinhtrang.setText("Đã khóa");
-
+                else if(tt==1)  viewHolder.constraintLayout.setBackgroundResource(R.drawable.br_row_dadiemdanh);
             }
             if (ht.before(star)){
                 //chưa mở

@@ -79,12 +79,17 @@ public class LoginActivity extends AppCompatActivity {
                 username = mscb.getText().toString();
                 pass = matkhau.getText().toString();
                 if (username.isEmpty() || pass.isEmpty()) {
-                    Toast.makeText(LoginActivity.this, "fill details", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Vui lòng điền đầy đủ thông tin!", Toast.LENGTH_SHORT).show();
                 } else {
-                    login(username, pass);
-                    selectHocKy();
-                    selecttuan();
-                    seMondaytoSundayofWeek();
+                    try {
+                        login(username, pass);
+                        selectHocKy();
+                        selecttuan();
+                        seMondaytoSundayofWeek();
+                    }catch (Exception e){
+                        Toast.makeText(LoginActivity.this, "Không tìm thấy người dùng!", Toast.LENGTH_SHORT).show();
+                    }
+
                 }
             }
         });
@@ -114,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "KHông tim thay", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "KHông có mạng!", Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         });

@@ -193,7 +193,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
         SharedPreferences shared6= getSharedPreferences("tuandbkt", Context.MODE_PRIVATE);
         final String tuabd = shared6.getString("tuanBD", "");
         int bd= Integer.parseInt(tuabd);
-        int st =Integer.parseInt(sotuan[1])-bd+1;
+        int st =Integer.parseInt(sotuan[1])-bd;
 //                Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
         final String  urlQlggTuan= url.getUrl()+"diemdanh/LichBieuTuanTheoTenCB.php?hotenCB="+hotencb+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
         runOnUiThread(new Runnable() {

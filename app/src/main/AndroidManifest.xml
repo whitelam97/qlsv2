@@ -16,12 +16,6 @@
             android:label="Quản lý giờ giảng"
             ></activity>
         <activity
-            android:name=".TheoDoiHDD"
-            android:label="Theo dõi hoạt động dạy" />
-        <activity
-            android:name=".ThanhTra_KiemTra"
-            android:label="Thanh tra kiểm tra" />
-        <activity
             android:name=".ThongKeGiangDay"
             android:label="Thống kê giảng dạy" />
         <activity

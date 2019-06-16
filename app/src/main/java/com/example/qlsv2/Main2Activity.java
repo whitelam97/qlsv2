@@ -7,6 +7,9 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
+import android.support.constraint.Constraints;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -28,7 +32,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.qlsv2.Adapter.LopHocAdapter;
+import com.example.qlsv2.Adapter.tkb_tuan_Adapter;
 import com.example.qlsv2.Class.lophoc;
+import com.example.qlsv2.Class.tkb_tuan;
 import com.example.qlsv2.Class.url;
 
 import org.json.JSONArray;
@@ -57,15 +63,15 @@ public class Main2Activity extends AppCompatActivity
     ListView listView;
     ArrayList<lophoc> lophocArrayList;
     ArrayList<lophoc> lophocArrayListtt;
+    ArrayList<lophoc> lophocBolocArrayListtt;
 
-    String  bang;
-
+    RadioGroup rdbgroup;
     ArrayList<String> nhahocspnarraylist,tanghocArrayList,khoaArrayList,tietbdArrayList;
-
-
-    RadioButton raball,rablt,rabth,rdbgroup;
+    RadioButton raball,rablt,rabth;
     Spinner spnnhahoc,spntang,spnkhoa,spntietbd;
     Button btntim;
+
+    String check;
 
     String arrtinhtrang[]={
             "Tất cả",
@@ -113,8 +119,7 @@ public class Main2Activity extends AppCompatActivity
 
             }
         });
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
@@ -189,7 +194,6 @@ public class Main2Activity extends AppCompatActivity
                         break;
                     }
                 }
-
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
@@ -197,13 +201,15 @@ public class Main2Activity extends AppCompatActivity
             }
         });
 
+        lophocBolocArrayListtt = new ArrayList<lophoc>();
+
         //click item listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String idlophp= lophocArrayList.get(position).getIdlopHP();
-                String idtkb= lophocArrayList.get(position).getIdTKB();
-                String stttuan= lophocArrayList.get(position).getSttTuan();
+                String idlophp= lophocBolocArrayListtt.get(position).getTenlopHP();
+                String idtkb= lophocBolocArrayListtt.get(position).getIdTKB();
+                String stttuan= lophocBolocArrayListtt.get(position).getSttTuan();
 
                 SharedPreferences sharedclick = getSharedPreferences("tkbclick", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedclick.edit();
@@ -211,6 +217,10 @@ public class Main2Activity extends AppCompatActivity
                 editor.putString("idtkb",idtkb);
                 editor.putString("stttuan",stttuan);
                 editor.commit();
+
+                Toast.makeText(Main2Activity.this, idlophp, Toast.LENGTH_SHORT).show();
+
+
 //                String pattern = "HH:mm";
 //                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
 //                Date now = new Date();
@@ -336,8 +346,111 @@ public class Main2Activity extends AppCompatActivity
         }
         LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
         listView.setAdapter(listadapternew);
-
     }
+    public  void Boloc(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,final String loailop,
+                       final String nha,final String tang, final String khoa,final String tietbd){
+        LopttArr.clear();
+        for (int j =0; j<Loparraylist.size(); j++){
+            String loai = Loparraylist.get(j).getLoailopHP();
+            String nh = Loparraylist.get(j).getNhahoc();
+            String tag = Loparraylist.get(j).getSttTang();
+            String kh = Loparraylist.get(j).getTenDvi();
+            String tbd = Loparraylist.get(j).getTietBD();
+            if (loai.equals(loailop)&&nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+        }
+        LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
+        listView.setAdapter(listadapternew);
+    }
+    public  void Bolockoloailophp(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,
+                       final String nha,final String tang, final String khoa,final String tietbd){
+        LopttArr.clear();
+        for (int j =0; j<Loparraylist.size(); j++){
+            String nh = Loparraylist.get(j).getNhahoc();
+            String tag = Loparraylist.get(j).getSttTang();
+            String kh = Loparraylist.get(j).getTenDvi();
+            String tbd = Loparraylist.get(j).getTietBD();
+            if (nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+        }
+        LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
+        listView.setAdapter(listadapternew);
+    }
+
+
+
+
+
     //đọc json load du liệu lên lisview
     class docJson extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -388,10 +501,7 @@ public class Main2Activity extends AppCompatActivity
 
                             ));
                 }
-                LopHocAdapter listadapter= new LopHocAdapter(
-                        getApplicationContext(),
-                        R.layout.row_lophoc,
-                        lophocArrayList);
+                LopHocAdapter listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayList);
                 listView.setAdapter(listadapter);
 
             } catch (JSONException e) {
@@ -473,22 +583,20 @@ public class Main2Activity extends AppCompatActivity
     public void showAlertDialog(){
         Dialog dialog = new Dialog(Main2Activity.this);
         dialog.setContentView(R.layout.dialog_thanhtra_boloc);
+        rdbgroup= dialog.findViewById(R.id.rabgroup);
         raball= dialog.findViewById(R.id.rbkall);
         rablt= dialog.findViewById(R.id.rablt);
         rabth= dialog.findViewById(R.id.rabth);
-
-
-
         spnnhahoc =dialog.findViewById(R.id.spnnhahoc);
         spntang =dialog.findViewById(R.id.spntanghoc);
         spnkhoa =dialog.findViewById(R.id.spnkhoa);
         spntietbd =dialog.findViewById(R.id.spntietbd);
 
-        btntim=dialog.findViewById(R.id.btntim);
 
+        dialog.getWindow().setGravity(Gravity.BOTTOM);
+        dialog.getWindow().setLayout(Constraints.LayoutParams.MATCH_PARENT, Constraints.LayoutParams.WRAP_CONTENT);
         //spinner nha hoc
         nhahocspnarraylist=new ArrayList<String>();
-        nhahocspnarraylist.add("all");
         try {
             for (int i = 0; i < lophocArrayListtt.size(); i++) {
                 if (!nhahocspnarraylist.contains(lophocArrayListtt.get(i).getNhahoc())) {
@@ -501,90 +609,178 @@ public class Main2Activity extends AppCompatActivity
             }
             ArrayAdapter<String> adapternhahoc = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, nhahocspnarraylist);
             spnnhahoc.setAdapter(adapternhahoc);
-            //chon nhà học thì moi load lại tang hoc
+            spnnhahoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int item, long l) {
+                        //Spinner tang hoc
+                        tanghocArrayList = new ArrayList<String>();
+                        try {
+                            for (int j = 0; j < lophocArrayListtt.size(); j++) {
+                                if (!tanghocArrayList.contains(lophocArrayListtt.get(j).getSttTang())&&spnnhahoc.getSelectedItem().toString().equals(lophocArrayListtt.get(j).getNhahoc())) {
+                                    String st = lophocArrayListtt.get(j).getSttTang();
+                                    tanghocArrayList.add(st);
+                                }
+                            }
+                            if (tanghocArrayList.size() == 0) {
+                                tanghocArrayList.add("");
+                            }
+                            ArrayAdapter<String> adaptertang = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, tanghocArrayList);
+                            spntang.setAdapter(adaptertang);
+                            spntang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                @Override
+                                public void onItemSelected(AdapterView<?> adapterView, View view, int item, long l) {
+                                    //Spinner khoa
+                                    khoaArrayList=new ArrayList<String>();
+                                    try {
+                                        for (int i = 0; i < lophocArrayListtt.size(); i++) {
+                                            if (!khoaArrayList.contains(lophocArrayListtt.get(i).getTenDvi())) {
+                                                String st=lophocArrayListtt.get(i).getTenDvi();
+                                                khoaArrayList.add(st);
+                                            }
+                                        }
+                                        if (khoaArrayList.size()==0){
+                                            khoaArrayList.add("");
+                                        }
+                                        ArrayAdapter<String> adaptekhoa = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, khoaArrayList);
+                                        spnkhoa.setAdapter(adaptekhoa);
+                                    }catch (Exception e ){
+                                        txttuanht.setText(e.toString());
+                                    }
+                                    spnkhoa.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                        @Override
+                                        public void onItemSelected(AdapterView<?> adapterView, View view, int item, long l) {
+                                            tietbdArrayList=new ArrayList<String>();
+                                            try {
+                                                for (int i = 0; i < lophocArrayListtt.size(); i++) {
+                                                    if (!tietbdArrayList.contains(lophocArrayListtt.get(i).getTietBD())) {
+                                                        String st=lophocArrayListtt.get(i).getTietBD();
+                                                        tietbdArrayList.add(st);
+                                                    }
+                                                }
+                                                if (tietbdArrayList.size()==0){
+                                                    tietbdArrayList.add("");
+                                                }
+                                                ArrayAdapter<String> adaptetietbd = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, tietbdArrayList);
+                                                spntietbd.setAdapter(adaptetietbd);
+                                            }catch (Exception e ){
+                                                txttuanht.setText(e.toString());
+                                            }
+                                            spntietbd.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                                @Override
+                                                public void onItemSelected(AdapterView<?> adapterView, View view, int item, long l) {
+                                                    String nhahoc= spnnhahoc.getSelectedItem().toString();
+                                                    String stttang= spntang.getSelectedItem().toString();
+                                                    String donvi= spnkhoa.getSelectedItem().toString();
+                                                    String tietbd= spntietbd.getSelectedItem().toString();
+                                                    if(raball.isChecked()){
+                                                        check="all";
+                                                    }else
+                                                    if(rablt.isChecked()){
+                                                        check="LT";
+                                                    }else
+                                                    if(rabth.isChecked()){
+                                                        check="TH";
+                                                    }
+                                                    if(check.equals("all")){
+                                                        Bolockoloailophp(lophocArrayListtt,lophocBolocArrayListtt,nhahoc,stttang,donvi,tietbd);
+                                                    }
+                                                    else{
+                                                        Boloc(lophocArrayListtt,lophocBolocArrayListtt,check,nhahoc,stttang,donvi,tietbd);
+                                                    }
+                                                    rdbgroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                                                        @Override
+                                                        public void onCheckedChanged(RadioGroup radioGroup, int i) {
+                                                            String nhahoc= spnnhahoc.getSelectedItem().toString();
+                                                            String stttang= spntang.getSelectedItem().toString();
+                                                            String donvi= spnkhoa.getSelectedItem().toString();
+                                                            String tietbd= spntietbd.getSelectedItem().toString();
+                                                            if(raball.isChecked()){
+                                                                check="all";
+                                                            }else
+                                                            if(rablt.isChecked()){
+                                                                check="LT";
+                                                            }else
+                                                            if(rabth.isChecked()){
+                                                                check="TH";
+                                                            }
+                                                            if(check.equals("all")){
+                                                                Bolockoloailophp(lophocArrayListtt,lophocBolocArrayListtt,nhahoc,stttang,donvi,tietbd);
+                                                            }
+                                                            else{
+                                                                Boloc(lophocArrayListtt,lophocBolocArrayListtt,check,nhahoc,stttang,donvi,tietbd);
+                                                            }
+                                                        }
+                                                    });
 
+                                                }
+                                                @Override
+                                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                                    String nhahoc= spnnhahoc.getSelectedItem().toString();
+                                                    String stttang= spntang.getSelectedItem().toString();
+                                                    String donvi= spnkhoa.getSelectedItem().toString();
+                                                    String tietbd= "1";
+                                                    Boloc(lophocArrayListtt,lophocBolocArrayListtt,"all",nhahoc,stttang,donvi,tietbd);
+                                                }
+                                            });
+                                        }
+                                        @Override
+                                        public void onNothingSelected(AdapterView<?> adapterView) {
+                                            tietbdArrayList=new ArrayList<String>();
+                                            try {
+                                                for (int i = 0; i < lophocArrayListtt.size(); i++) {
+                                                    if (!tietbdArrayList.contains(lophocArrayListtt.get(i).getTietBD())) {
+                                                        String st=lophocArrayListtt.get(i).getTietBD();
+                                                        tietbdArrayList.add(st);
+                                                    }
+                                                }
+                                                if (tietbdArrayList.size()==0){
+                                                    tietbdArrayList.add("");
+                                                }
+                                                ArrayAdapter<String> adaptetietbd = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, tietbdArrayList);
+                                                spntietbd.setAdapter(adaptetietbd);
+                                            }catch (Exception e ){
+                                                txttuanht.setText(e.toString());
+                                            }
+                                        }
+                                    });
+
+                                }
+                                @Override
+                                public void onNothingSelected(AdapterView<?> adapterView) {
+                                    //Spinner khoa
+                                    khoaArrayList=new ArrayList<String>();
+                                    try {
+                                        for (int i = 0; i < lophocArrayListtt.size(); i++) {
+                                            if (!khoaArrayList.contains(lophocArrayListtt.get(i).getTenDvi())) {
+                                                String st=lophocArrayListtt.get(i).getTenDvi();
+                                                khoaArrayList.add(st);
+                                            }
+                                        }
+                                        if (khoaArrayList.size()==0){
+                                            khoaArrayList.add("");
+                                        }
+                                        ArrayAdapter<String> adaptekhoa = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, khoaArrayList);
+                                        spnkhoa.setAdapter(adaptekhoa);
+                                    }catch (Exception e ){
+                                        txttuanht.setText(e.toString());
+                                    }
+                                }
+                            });
+                        } catch (Exception e) {
+                            txttuanht.setText(e.toString());
+                        }
+                    }
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+                    spnnhahoc.setClickable(false);
+                    tanghocArrayList=new ArrayList<String>();
+                    ArrayAdapter<String> adaptertang = new ArrayAdapter<>(Main2Activity.this, android.R.layout.simple_spinner_item, tanghocArrayList);
+                    spntang.setAdapter(adaptertang);
+                }
+            });
         }catch (Exception e ){
             txttuanht.setText(e.toString());
         }
-
-        //Spinner tang hoc
-        tanghocArrayList=new ArrayList<String>();
-        try {
-            for (int i = 0; i < lophocArrayListtt.size(); i++) {
-                if (!tanghocArrayList.contains(lophocArrayListtt.get(i).getSttTang())) {
-                    String st=lophocArrayListtt.get(i).getSttTang();
-                    tanghocArrayList.add(st);
-                }
-            }
-            if (tanghocArrayList.size()==0){
-                tanghocArrayList.add("");
-            }
-            ArrayAdapter<String> adaptertang = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tanghocArrayList);
-            spntang.setAdapter(adaptertang);
-        }catch (Exception e ){
-            txttuanht.setText(e.toString());
-        }
-
-
-        //Spinner khoa
-        khoaArrayList=new ArrayList<String>();
-        try {
-            for (int i = 0; i < lophocArrayListtt.size(); i++) {
-                if (!khoaArrayList.contains(lophocArrayListtt.get(i).getTenDvi())) {
-                    String st=lophocArrayListtt.get(i).getTenDvi();
-                    khoaArrayList.add(st);
-                }
-            }
-            if (khoaArrayList.size()==0){
-                khoaArrayList.add("");
-            }
-            ArrayAdapter<String> adaptekhoa = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, khoaArrayList);
-            spnkhoa.setAdapter(adaptekhoa);
-        }catch (Exception e ){
-            txttuanht.setText(e.toString());
-        }
-
-        //spinner tiet bat dau
-        tietbdArrayList=new ArrayList<String>();
-        try {
-            for (int i = 0; i < lophocArrayListtt.size(); i++) {
-                if (!tietbdArrayList.contains(lophocArrayListtt.get(i).getTietBD())) {
-                    String st=lophocArrayListtt.get(i).getTietBD();
-                    tietbdArrayList.add(st);
-                }
-            }
-            if (tietbdArrayList.size()==0){
-                tietbdArrayList.add("");
-            }
-            ArrayAdapter<String> adaptetietbd = new ArrayAdapter<>(this, android.R.layout.simple_spinner_item, tietbdArrayList);
-            spntietbd.setAdapter(adaptetietbd);
-        }catch (Exception e ){
-            txttuanht.setText(e.toString());
-        }
-
-
-        btntim.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                String check="";
-                if(raball.isChecked()){
-                    check=raball.getText().toString();
-                }else
-                if(rablt.isChecked()){
-                    check=rablt.getText().toString();
-                }else
-                if(rabth.isChecked()){
-                    check=rabth.getText().toString();
-                }
-                Toast.makeText(Main2Activity.this, check, Toast.LENGTH_SHORT).show();
-
-            }
-        });
-
-
-
-
-
 
 
 
@@ -602,16 +798,9 @@ public class Main2Activity extends AppCompatActivity
             // Handle the camera action
             Intent intentuser =new Intent(Main2Activity.this,UserActivity.class);
             startActivity(intentuser);
-        } else if (id == R.id.nav_calender1) {
-            Intent intentdhdd =new Intent(Main2Activity.this,TheoDoiHDD.class);
-            startActivity(intentdhdd);
-        } else if (id == R.id.nav_list1) {
+        }else if (id == R.id.nav_list1) {
             Intent intentqlgg =new Intent(Main2Activity.this,QuanLyGioGiang.class);
             startActivity(intentqlgg);
-        } else if (id == R.id.nav_test1) {
-            Intent intenthtkt=new Intent(Main2Activity.this,ThanhTra_KiemTra.class);
-            startActivity(intenthtkt);
-
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/bg_row_listview"
     android:orientation="vertical">
 
 
@@ -10,6 +12,10 @@
         android:id="@+id/textView3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginRight="4dp"
+        android:background="@color/white"
         android:shadowColor="@color/colorAccent"
         android:text="BỘ LỌC"
         android:textAlignment="center"
@@ -17,10 +23,20 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/bggreenrow">
+
+    </FrameLayout>
+
     <RadioGroup
         android:id="@+id/rabgroup"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="3dp"
+        android:layout_marginRight="3dp"
+        android:background="@color/white"
         android:orientation="horizontal">
 
         <RadioButton
@@ -55,14 +71,17 @@
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_marginRight="3dp"
+        android:layout_marginLeft="3dp"
+        android:background="@color/white">
 
         <android.support.constraint.Guideline
             android:id="@+id/guideline3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintGuide_begin="130dp" />
+            app:layout_constraintGuide_begin="123dp" />
 
         <LinearLayout
             android:id="@+id/linearLayout"
@@ -78,7 +97,6 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="8dp"
                 android:text="Nhà học :"
                 android:textColor="#0C0A0A"
                 android:textSize="16sp" />
@@ -87,6 +105,7 @@
                 android:id="@+id/textView9"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
                 android:text="Tầng :"
                 android:textColor="#0C0A0A"
                 android:textSize="16sp" />
@@ -95,6 +114,7 @@
                 android:id="@+id/textView13"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
                 android:text="Khoa :"
                 android:textColor="#0C0A0A"
                 android:textSize="16sp" />
@@ -103,12 +123,14 @@
                 android:id="@+id/textView14"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingTop="8dp"
                 android:text="Tiết BĐ :"
                 android:textColor="#0C0A0A"
                 android:textSize="16sp" />
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout3"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
@@ -127,24 +149,23 @@
             <Spinner
                 android:id="@+id/spntanghoc"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
             <Spinner
                 android:id="@+id/spnkhoa"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
 
             <Spinner
                 android:id="@+id/spntietbd"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" />
+
         </LinearLayout>
 
     </android.support.constraint.ConstraintLayout>
 
-    <Button
-        android:id="@+id/btntim"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Button" />
 </LinearLayout>
