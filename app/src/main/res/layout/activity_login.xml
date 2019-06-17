@@ -53,7 +53,7 @@
                     android:id="@+id/spnquyen"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="60dp"
+                    android:layout_marginLeft="70dp"
                     android:layout_marginRight="50dp"
                     android:spinnerMode="dialog"
                     android:textAlignment="textEnd" />
@@ -121,7 +121,7 @@
                             android:background="@drawable/bg_row_listview"
                             android:gravity="center"
                             android:letterSpacing="0.2"
-                            android:text="Login"
+                            android:text="ĐĂNG NHẬP"
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />

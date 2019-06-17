@@ -100,6 +100,9 @@ public class Main2Activity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
 
+        txttuanht=findViewById(R.id.txttuanht);
+        listView = findViewById(R.id.lvlophoc);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -155,57 +158,41 @@ public class Main2Activity extends AppCompatActivity
         txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
         listView = findViewById(R.id.lvlophoc);
-
-//        lophocArrayList = new ArrayList<lophoc>();
-//        runOnUiThread(new Runnable() {
-//            @Override
-//            public void run() {
-//                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
-//            }
-//        });
         LoadListview();
-
         //load Spinner tinh trang
          spntinhtrang= findViewById(R.id.spntinhtrang);
         ArrayAdapter<String> adapter=new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item,arrtinhtrang);
         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
         spntinhtrang.setAdapter(adapter);
 
-
         //load lại list view đã loc qua spinner tinh trang
-        lophocArrayListtt = new ArrayList<lophoc>();
         spntinhtrang.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i){
                     case 0:{
                         //all
-                        lophocArrayListtt.clear();
-                        Loctinhtrang(lophocArrayList,lophocArrayListtt,"6");
+                        LoadListview();
                         break;
                     }
                     case 1:{
                         //chua mo
-                        lophocArrayListtt.clear();
-                        Loctinhtrang(lophocArrayList,lophocArrayListtt,"-1");
+                        loadlistviewtheotinhtrang("-1");
                         break;
                     }
                     case 2:{
                         //chua diem danh
-                        lophocArrayListtt.clear();
-                        Loctinhtrang(lophocArrayList,lophocArrayListtt,"0");
-
-                    } break;
+                        loadlistviewtheotinhtrang("0");
+                        break;
+                    }
                     case 3:{
                         // da diem danh
-                        lophocArrayListtt.clear();
-                        Loctinhtrang(lophocArrayList,lophocArrayListtt,"1");
+                        loadlistviewtheotinhtrang("1");
                         break;
                     }
                     case 4:{
                         //da khoa
-                        lophocArrayListtt.clear();
-                        Loctinhtrang(lophocArrayList,lophocArrayListtt,"2");
+                        loadlistviewtheotinhtrang("2");
                         break;
                     }
                 }
@@ -214,11 +201,14 @@ public class Main2Activity extends AppCompatActivity
                     public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                         String tinhtr= lophocArrayListtt.get(position).getTinhtrang();
                         String idtkb= lophocArrayListtt.get(position).getIdTKB();
-                        Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
-                        UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
-                        lophocArrayListtt.remove(position);
-                        listadapter.notifyDataSetChanged();
-                        LoadListview();
+                        if(tinhtr.equals("2")||tinhtr.equals("0")){
+                            Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                            UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
+                            lophocArrayListtt.remove(position);
+                            listadapter.notifyDataSetChanged();
+                        }else
+                            Toast.makeText(Main2Activity.this, "Xin chọn lại!", Toast.LENGTH_SHORT).show();
+
                         return false;
                     }
                 });
@@ -242,22 +232,31 @@ public class Main2Activity extends AppCompatActivity
         final String monday = shared3.getString("monday", "");
         final String sunday = shared3.getString("sunday", "");
         final String dayht = shared3.getString("ngayht", "");
-
         //set textview tuan hien tai
-        txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
-
-        listView = findViewById(R.id.lvlophoc);
-        lophocArrayList = new ArrayList<lophoc>();
+        lophocArrayListtt = new ArrayList<lophoc>();
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
+    }
+    public  void loadlistviewtheotinhtrang(final String tihtrag){
+        //Đổ dữ liệu ra lisview thoikhoabieu
+        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+        final String hkht = shared1.getString("idHK", "");
+        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+        final String tuan = shared2.getString("sttTuan", "");
+        lophocArrayListtt = new ArrayList<lophoc>();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new Main2Activity.docJsontheotinhtrang().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTTTheoTinhTRang.php?sttTuan="+tuan+"&idHK="+hkht+"&tinhtrang="+tihtrag+"");
+            }
+        });
 
     }
-
     //đọc json load du liệu lên lisview
     class docJson extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -271,7 +270,7 @@ public class Main2Activity extends AppCompatActivity
                 JSONArray mangjson = new JSONArray(s);
                 for(int i=0;i<mangjson.length();i++){
                     JSONObject lh= mangjson.getJSONObject(i);
-                    lophocArrayList.add(new lophoc(
+                    lophocArrayListtt.add(new lophoc(
                             lh.getString("idTKB"),
                             lh.getString("sttTuan"),
                             lh.getString("thu"),
@@ -308,8 +307,8 @@ public class Main2Activity extends AppCompatActivity
 
                             ));
                 }
-//                LopHocAdapter listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayList);
-//                listView.setAdapter(listadapter);
+                listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayListtt);
+                listView.setAdapter(listadapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -517,6 +516,63 @@ public class Main2Activity extends AppCompatActivity
         listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
         listView.setAdapter(listadapter);
     }
+    class docJsontheotinhtrang extends AsyncTask<String,Integer,String> {
+        //doinbackgroufd dung doc du lieu tren mang
+        @Override
+        protected String doInBackground(String... strings) {
+            return docnoidungtuURL(strings[0]);
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                JSONArray mangjson = new JSONArray(s);
+                for(int i=0;i<mangjson.length();i++){
+                    JSONObject lh= mangjson.getJSONObject(i);
+                    lophocArrayListtt.add(new lophoc(
+                            lh.getString("idTKB"),
+                            lh.getString("sttTuan"),
+                            lh.getString("thu"),
+                            lh.getString("tietBD"),
+                            lh.getString("sotiet"),
+                            lh.getString("daybu"),
+                            lh.getString("idlopHP"),
+                            lh.getString("idPhong"),
+                            lh.getString("tinhtrang"),
+                            lh.getString("idCB"),
+                            lh.getString("thoigiandiemdanh"),
+                            lh.getString("msCB"),
+                            lh.getString("hotenCB"),
+                            lh.getString("idHP"),
+                            lh.getString("mslopHP"),
+                            lh.getString("tenlopHP"),
+                            lh.getString("loailopHP"),
+                            lh.getString("soSV"),
+                            lh.getString("tuanhoc"),
+                            lh.getString("msPhong"),
+                            lh.getString("tenPhong"),
+                            lh.getString("nhahoc"),
+                            lh.getString("sttTang"),
+                            lh.getString("loaiPhong"),
+                            lh.getString("idHK"),
+                            lh.getString("msHK"),
+                            lh.getString("hocky"),
+                            lh.getString("namhoc"),
+                            lh.getString("thoigianBD"),
+                            lh.getString("thoigianKT"),
+                            lh.getString("tgbd"),
+                            lh.getString("tgkt"),
+                            lh.getString("tenDvi")
+
+                    ));
+                }
+                LopHocAdapter listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayListtt);
+                listView.setAdapter(listadapter);
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
@@ -705,17 +761,18 @@ public class Main2Activity extends AppCompatActivity
                                                         }
                                                     });
 
-
                                                     listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
                                                         @Override
                                                         public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
                                                             String tinhtr= lophocBolocArrayListtt.get(position).getTinhtrang();
                                                             String idtkb= lophocBolocArrayListtt.get(position).getIdTKB();
-                                                            Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
-                                                            UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
-                                                            lophocBolocArrayListtt.remove(position);
-                                                            listadapter.notifyDataSetChanged();
-                                                            LoadListview();
+                                                            if(tinhtr.equals("2")||tinhtr.equals("0")){
+                                                                Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                                                                UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
+                                                                lophocBolocArrayListtt.remove(position);
+                                                                listadapter.notifyDataSetChanged();
+                                                            }else
+                                                                Toast.makeText(Main2Activity.this, "Xin chọn lại!", Toast.LENGTH_SHORT).show();
                                                             return false;
                                                         }
                                                     });
@@ -795,7 +852,6 @@ public class Main2Activity extends AppCompatActivity
 
         dialog.show();
     }
-
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {

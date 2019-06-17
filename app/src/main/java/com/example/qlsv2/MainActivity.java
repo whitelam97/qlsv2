@@ -218,6 +218,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
     private static String docnoidungtuURL(String theUrl) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -238,6 +239,7 @@ public class MainActivity extends AppCompatActivity
         }
         return stringBuilder.toString();
     }
+
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);

@@ -104,8 +104,6 @@ public class LopHocAdapter extends BaseAdapter {
                 viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lopdangdienra);
                 if (tt!=1)  viewHolder.tvtinhtrang.setText("Chưa điểm danh");
                 else if(tt==1)  viewHolder.constraintLayout.setBackgroundResource(R.drawable.br_row_dadiemdanh);
-
-
             }
             if (star.before(ht)&&end.before(ht)) {
                 //đã khóa
@@ -116,10 +114,11 @@ public class LopHocAdapter extends BaseAdapter {
             if (ht.before(star)){
                 //chưa mở
                 String loailpHP= contact.getLoailopHP();
-                if (loailpHP.equals("TH")){
+                if (loailpHP.equals("LT")){
                     viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lythuyet);
+                }else if (loailpHP.equals("TH")){
+                    viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_thuchanh);
                 }
-                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_thuchanh);
 //                viewHolder.listView.getChildAt( position).setEnabled(false);
                 viewHolder.tvtinhtrang.setText("Chưa mở");
 
