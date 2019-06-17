@@ -31,6 +31,13 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.qlsv2.Adapter.LopHocAdapter;
 import com.example.qlsv2.Adapter.tkb_tuan_Adapter;
 import com.example.qlsv2.Class.lophoc;
@@ -45,7 +52,11 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 
 import es.dmoral.toasty.Toasty;
@@ -71,6 +82,7 @@ public class Main2Activity extends AppCompatActivity
     Spinner spnnhahoc,spntang,spnkhoa,spntietbd;
     Button btntim;
 
+    LopHocAdapter listadapter;
     String check;
 
     String arrtinhtrang[]={
@@ -80,6 +92,8 @@ public class Main2Activity extends AppCompatActivity
             "Đã điểm danh",
             "Đã khóa"
     };
+    String urlupdatedd=url.getUrl()+"diemdanh/SetTinhTrangTGTKB.php";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -126,7 +140,6 @@ public class Main2Activity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Đổ dữ liệu ra listview
-        //Đổ dữ liệu ra lisview thoikhoabieu
         SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
         final String hkht = shared1.getString("idHK", "");
         SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
@@ -142,13 +155,15 @@ public class Main2Activity extends AppCompatActivity
         txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
         listView = findViewById(R.id.lvlophoc);
-        lophocArrayList = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
-            }
-        });
+
+//        lophocArrayList = new ArrayList<lophoc>();
+//        runOnUiThread(new Runnable() {
+//            @Override
+//            public void run() {
+//                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+//            }
+//        });
+        LoadListview();
 
         //load Spinner tinh trang
          spntinhtrang= findViewById(R.id.spntinhtrang);
@@ -194,51 +209,27 @@ public class Main2Activity extends AppCompatActivity
                         break;
                     }
                 }
+                listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                    @Override
+                    public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                        String tinhtr= lophocArrayListtt.get(position).getTinhtrang();
+                        String idtkb= lophocArrayListtt.get(position).getIdTKB();
+                        Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                        UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
+                        lophocArrayListtt.remove(position);
+                        listadapter.notifyDataSetChanged();
+                        LoadListview();
+                        return false;
+                    }
+                });
             }
             @Override
             public void onNothingSelected(AdapterView<?> adapterView) {
-
+                LoadListview();
             }
         });
 
         lophocBolocArrayListtt = new ArrayList<lophoc>();
-
-        //click item listview
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String idlophp= lophocBolocArrayListtt.get(position).getTenlopHP();
-                String idtkb= lophocBolocArrayListtt.get(position).getIdTKB();
-                String stttuan= lophocBolocArrayListtt.get(position).getSttTuan();
-
-                SharedPreferences sharedclick = getSharedPreferences("tkbclick", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedclick.edit();
-                editor.putString("idlophp",idlophp);
-                editor.putString("idtkb",idtkb);
-                editor.putString("stttuan",stttuan);
-                editor.commit();
-
-                Toast.makeText(Main2Activity.this, idlophp, Toast.LENGTH_SHORT).show();
-
-
-//                String pattern = "HH:mm";
-//                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-//                Date now = new Date();
-//                String t= sdf.format(now);
-//                try {
-//                    Date star = sdf.parse(lophocArrayList.get(position).getTgbd());
-//                    Date end = sdf.parse(lophocArrayList.get(position).getTgkt());
-//                    Date ht =sdf.parse(t);
-//                    if(ht.after(star)&&ht.before(end)) {
-//                        Intent intendiemdanh =new Intent(Main2Activity.this,DiemDanhActivity.class);
-//                        startActivity(intendiemdanh);
-//                    }
-//                } catch (ParseException e){
-//                    e.printStackTrace();
-//                }
-            }
-        });
-
     }
     public void LoadListview(){
         //Đổ dữ liệu ra lisview thoikhoabieu
@@ -266,190 +257,6 @@ public class Main2Activity extends AppCompatActivity
         });
 
     }
-    public  void Loctinhtrang(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,final String k){
-        for (int j =0; j<Loparraylist.size(); j++){
-            String tt = Loparraylist.get(j).getTinhtrang();
-            if (tt.equals(k)){
-                LopttArr.add(new lophoc(
-                        Loparraylist.get(j).getIdTKB(),
-                        Loparraylist.get(j).getSttTuan(),
-                        Loparraylist.get(j).getThu(),
-                        Loparraylist.get(j).getTietBD(),
-                        Loparraylist.get(j).getSotiet(),
-                        Loparraylist.get(j).getDaybu(),
-                        Loparraylist.get(j).getIdlopHP(),
-                        Loparraylist.get(j).getIdPhong(),
-                        Loparraylist.get(j).getTinhtrang(),
-                        Loparraylist.get(j).getIdCB(),
-                        Loparraylist.get(j).getThoigiandiemdanh(),
-                        Loparraylist.get(j).getMsCB(),
-                        Loparraylist.get(j).getHotenCB(),
-                        Loparraylist.get(j).getIdHP(),
-                        Loparraylist.get(j).getMslopHP(),
-                        Loparraylist.get(j).getTenlopHP(),
-                        Loparraylist.get(j).getLoailopHP(),
-                        Loparraylist.get(j).getSoSV(),
-                        Loparraylist.get(j).getTuanhoc(),
-                        Loparraylist.get(j).getMsPhong(),
-                        Loparraylist.get(j).getTenPhong(),
-                        Loparraylist.get(j).getNhahoc(),
-                        Loparraylist.get(j).getSttTang(),
-                        Loparraylist.get(j).getLoaiPhong(),
-                        Loparraylist.get(j).getIdHK(),
-                        Loparraylist.get(j).getMsHK(),
-                        Loparraylist.get(j).getHocky(),
-                        Loparraylist.get(j).getNamhoc(),
-                        Loparraylist.get(j).getThoigianBD(),
-                        Loparraylist.get(j).getThoigianKT(),
-                        Loparraylist.get(j).getTgbd(),
-                        Loparraylist.get(j).getTgkt(),
-                        Loparraylist.get(j).getTenDvi()
-                        ));
-            }
-            if (k.equals("6")){
-                LopttArr.add(new lophoc(
-                        Loparraylist.get(j).getIdTKB(),
-                        Loparraylist.get(j).getSttTuan(),
-                        Loparraylist.get(j).getThu(),
-                        Loparraylist.get(j).getTietBD(),
-                        Loparraylist.get(j).getSotiet(),
-                        Loparraylist.get(j).getDaybu(),
-                        Loparraylist.get(j).getIdlopHP(),
-                        Loparraylist.get(j).getIdPhong(),
-                        Loparraylist.get(j).getTinhtrang(),
-                        Loparraylist.get(j).getIdCB(),
-                        Loparraylist.get(j).getThoigiandiemdanh(),
-                        Loparraylist.get(j).getMsCB(),
-                        Loparraylist.get(j).getHotenCB(),
-                        Loparraylist.get(j).getIdHP(),
-                        Loparraylist.get(j).getMslopHP(),
-                        Loparraylist.get(j).getTenlopHP(),
-                        Loparraylist.get(j).getLoailopHP(),
-                        Loparraylist.get(j).getSoSV(),
-                        Loparraylist.get(j).getTuanhoc(),
-                        Loparraylist.get(j).getMsPhong(),
-                        Loparraylist.get(j).getTenPhong(),
-                        Loparraylist.get(j).getNhahoc(),
-                        Loparraylist.get(j).getSttTang(),
-                        Loparraylist.get(j).getLoaiPhong(),
-                        Loparraylist.get(j).getIdHK(),
-                        Loparraylist.get(j).getMsHK(),
-                        Loparraylist.get(j).getHocky(),
-                        Loparraylist.get(j).getNamhoc(),
-                        Loparraylist.get(j).getThoigianBD(),
-                        Loparraylist.get(j).getThoigianKT(),
-                        Loparraylist.get(j).getTgbd(),
-                        Loparraylist.get(j).getTgkt(),
-                        Loparraylist.get(j).getTenDvi()
-                ));
-            }
-        }
-        LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
-        listView.setAdapter(listadapternew);
-    }
-    public  void Boloc(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,final String loailop,
-                       final String nha,final String tang, final String khoa,final String tietbd){
-        LopttArr.clear();
-        for (int j =0; j<Loparraylist.size(); j++){
-            String loai = Loparraylist.get(j).getLoailopHP();
-            String nh = Loparraylist.get(j).getNhahoc();
-            String tag = Loparraylist.get(j).getSttTang();
-            String kh = Loparraylist.get(j).getTenDvi();
-            String tbd = Loparraylist.get(j).getTietBD();
-            if (loai.equals(loailop)&&nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
-                LopttArr.add(new lophoc(
-                        Loparraylist.get(j).getIdTKB(),
-                        Loparraylist.get(j).getSttTuan(),
-                        Loparraylist.get(j).getThu(),
-                        Loparraylist.get(j).getTietBD(),
-                        Loparraylist.get(j).getSotiet(),
-                        Loparraylist.get(j).getDaybu(),
-                        Loparraylist.get(j).getIdlopHP(),
-                        Loparraylist.get(j).getIdPhong(),
-                        Loparraylist.get(j).getTinhtrang(),
-                        Loparraylist.get(j).getIdCB(),
-                        Loparraylist.get(j).getThoigiandiemdanh(),
-                        Loparraylist.get(j).getMsCB(),
-                        Loparraylist.get(j).getHotenCB(),
-                        Loparraylist.get(j).getIdHP(),
-                        Loparraylist.get(j).getMslopHP(),
-                        Loparraylist.get(j).getTenlopHP(),
-                        Loparraylist.get(j).getLoailopHP(),
-                        Loparraylist.get(j).getSoSV(),
-                        Loparraylist.get(j).getTuanhoc(),
-                        Loparraylist.get(j).getMsPhong(),
-                        Loparraylist.get(j).getTenPhong(),
-                        Loparraylist.get(j).getNhahoc(),
-                        Loparraylist.get(j).getSttTang(),
-                        Loparraylist.get(j).getLoaiPhong(),
-                        Loparraylist.get(j).getIdHK(),
-                        Loparraylist.get(j).getMsHK(),
-                        Loparraylist.get(j).getHocky(),
-                        Loparraylist.get(j).getNamhoc(),
-                        Loparraylist.get(j).getThoigianBD(),
-                        Loparraylist.get(j).getThoigianKT(),
-                        Loparraylist.get(j).getTgbd(),
-                        Loparraylist.get(j).getTgkt(),
-                        Loparraylist.get(j).getTenDvi()
-                ));
-            }
-        }
-        LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
-        listView.setAdapter(listadapternew);
-    }
-    public  void Bolockoloailophp(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,
-                       final String nha,final String tang, final String khoa,final String tietbd){
-        LopttArr.clear();
-        for (int j =0; j<Loparraylist.size(); j++){
-            String nh = Loparraylist.get(j).getNhahoc();
-            String tag = Loparraylist.get(j).getSttTang();
-            String kh = Loparraylist.get(j).getTenDvi();
-            String tbd = Loparraylist.get(j).getTietBD();
-            if (nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
-                LopttArr.add(new lophoc(
-                        Loparraylist.get(j).getIdTKB(),
-                        Loparraylist.get(j).getSttTuan(),
-                        Loparraylist.get(j).getThu(),
-                        Loparraylist.get(j).getTietBD(),
-                        Loparraylist.get(j).getSotiet(),
-                        Loparraylist.get(j).getDaybu(),
-                        Loparraylist.get(j).getIdlopHP(),
-                        Loparraylist.get(j).getIdPhong(),
-                        Loparraylist.get(j).getTinhtrang(),
-                        Loparraylist.get(j).getIdCB(),
-                        Loparraylist.get(j).getThoigiandiemdanh(),
-                        Loparraylist.get(j).getMsCB(),
-                        Loparraylist.get(j).getHotenCB(),
-                        Loparraylist.get(j).getIdHP(),
-                        Loparraylist.get(j).getMslopHP(),
-                        Loparraylist.get(j).getTenlopHP(),
-                        Loparraylist.get(j).getLoailopHP(),
-                        Loparraylist.get(j).getSoSV(),
-                        Loparraylist.get(j).getTuanhoc(),
-                        Loparraylist.get(j).getMsPhong(),
-                        Loparraylist.get(j).getTenPhong(),
-                        Loparraylist.get(j).getNhahoc(),
-                        Loparraylist.get(j).getSttTang(),
-                        Loparraylist.get(j).getLoaiPhong(),
-                        Loparraylist.get(j).getIdHK(),
-                        Loparraylist.get(j).getMsHK(),
-                        Loparraylist.get(j).getHocky(),
-                        Loparraylist.get(j).getNamhoc(),
-                        Loparraylist.get(j).getThoigianBD(),
-                        Loparraylist.get(j).getThoigianKT(),
-                        Loparraylist.get(j).getTgbd(),
-                        Loparraylist.get(j).getTgkt(),
-                        Loparraylist.get(j).getTenDvi()
-                ));
-            }
-        }
-        LopHocAdapter listadapternew= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
-        listView.setAdapter(listadapternew);
-    }
-
-
-
-
 
     //đọc json load du liệu lên lisview
     class docJson extends AsyncTask<String,Integer,String> {
@@ -501,8 +308,8 @@ public class Main2Activity extends AppCompatActivity
 
                             ));
                 }
-                LopHocAdapter listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayList);
-                listView.setAdapter(listadapter);
+//                LopHocAdapter listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, lophocArrayList);
+//                listView.setAdapter(listadapter);
 
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -530,6 +337,187 @@ public class Main2Activity extends AppCompatActivity
         return stringBuilder.toString();
 
     }
+    public  void Loctinhtrang(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,final String k){
+        for (int j =0; j<Loparraylist.size(); j++){
+            String tt = Loparraylist.get(j).getTinhtrang();
+            if (tt.equals(k)){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+            if (k.equals("6")){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+        }
+        listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
+        listView.setAdapter(listadapter);
+    }
+    public  void Boloc(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,final String loailop,
+                       final String nha,final String tang, final String khoa,final String tietbd){
+        LopttArr.clear();
+        for (int j =0; j<Loparraylist.size(); j++){
+            String loai = Loparraylist.get(j).getLoailopHP();
+            String nh = Loparraylist.get(j).getNhahoc();
+            String tag = Loparraylist.get(j).getSttTang();
+            String kh = Loparraylist.get(j).getTenDvi();
+            String tbd = Loparraylist.get(j).getTietBD();
+            if (loai.equals(loailop)&&nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+        }
+        listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
+        listView.setAdapter(listadapter);
+    }
+    public  void Bolockoloailophp(ArrayList<lophoc> Loparraylist, ArrayList<lophoc> LopttArr,
+                                  final String nha,final String tang, final String khoa,final String tietbd){
+        LopttArr.clear();
+        for (int j =0; j<Loparraylist.size(); j++){
+            String nh = Loparraylist.get(j).getNhahoc();
+            String tag = Loparraylist.get(j).getSttTang();
+            String kh = Loparraylist.get(j).getTenDvi();
+            String tbd = Loparraylist.get(j).getTietBD();
+            if (nh.equals(nha)&&tag.equals(tang)&&kh.equals(khoa)&&tbd.equals(tietbd)){
+                LopttArr.add(new lophoc(
+                        Loparraylist.get(j).getIdTKB(),
+                        Loparraylist.get(j).getSttTuan(),
+                        Loparraylist.get(j).getThu(),
+                        Loparraylist.get(j).getTietBD(),
+                        Loparraylist.get(j).getSotiet(),
+                        Loparraylist.get(j).getDaybu(),
+                        Loparraylist.get(j).getIdlopHP(),
+                        Loparraylist.get(j).getIdPhong(),
+                        Loparraylist.get(j).getTinhtrang(),
+                        Loparraylist.get(j).getIdCB(),
+                        Loparraylist.get(j).getThoigiandiemdanh(),
+                        Loparraylist.get(j).getMsCB(),
+                        Loparraylist.get(j).getHotenCB(),
+                        Loparraylist.get(j).getIdHP(),
+                        Loparraylist.get(j).getMslopHP(),
+                        Loparraylist.get(j).getTenlopHP(),
+                        Loparraylist.get(j).getLoailopHP(),
+                        Loparraylist.get(j).getSoSV(),
+                        Loparraylist.get(j).getTuanhoc(),
+                        Loparraylist.get(j).getMsPhong(),
+                        Loparraylist.get(j).getTenPhong(),
+                        Loparraylist.get(j).getNhahoc(),
+                        Loparraylist.get(j).getSttTang(),
+                        Loparraylist.get(j).getLoaiPhong(),
+                        Loparraylist.get(j).getIdHK(),
+                        Loparraylist.get(j).getMsHK(),
+                        Loparraylist.get(j).getHocky(),
+                        Loparraylist.get(j).getNamhoc(),
+                        Loparraylist.get(j).getThoigianBD(),
+                        Loparraylist.get(j).getThoigianKT(),
+                        Loparraylist.get(j).getTgbd(),
+                        Loparraylist.get(j).getTgkt(),
+                        Loparraylist.get(j).getTenDvi()
+                ));
+            }
+        }
+        listadapter= new LopHocAdapter(getApplicationContext(), R.layout.row_lophoc, LopttArr);
+        listView.setAdapter(listadapter);
+    }
+
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);
@@ -571,11 +559,16 @@ public class Main2Activity extends AppCompatActivity
         if (id == R.id.action_find) {
             showAlertDialog();
             return true;
-        }else
+        }
+        else
             if (id == R.id.action_reset) {
-                    LoadListview();
-                    spntinhtrang.setSelection(0);
-            return true;
+//                lophocArrayList = new ArrayList<lophoc>();
+                LoadListview();
+//                lophocArrayListtt = new ArrayList<lophoc>();
+//               Loctinhtrang(lophocArrayList,lophocArrayListtt,"6");
+//                spntinhtrang.setSelection(0);
+
+                return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -712,6 +705,21 @@ public class Main2Activity extends AppCompatActivity
                                                         }
                                                     });
 
+
+                                                    listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+                                                        @Override
+                                                        public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+                                                            String tinhtr= lophocBolocArrayListtt.get(position).getTinhtrang();
+                                                            String idtkb= lophocBolocArrayListtt.get(position).getIdTKB();
+                                                            Toast.makeText(Main2Activity.this, "Cập nhật thành công!", Toast.LENGTH_SHORT).show();
+                                                            UpdateTinhtrangTGDiemDanh(urlupdatedd,tinhtr,idtkb);
+                                                            lophocBolocArrayListtt.remove(position);
+                                                            listadapter.notifyDataSetChanged();
+                                                            LoadListview();
+                                                            return false;
+                                                        }
+                                                    });
+
                                                 }
                                                 @Override
                                                 public void onNothingSelected(AdapterView<?> adapterView) {
@@ -810,6 +818,52 @@ public class Main2Activity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    private void UpdateTinhtrangTGDiemDanh(String urlUpdateTTTG,final String tinhtrang, final  String idtkb){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest= new StringRequest(Request.Method.POST,urlUpdateTTTG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                         Toast.makeText(Main2Activity.this, " thành công!", Toast.LENGTH_LONG).show();
+                        }
+//                       else
+//                           Toast.makeText(Main2Activity.this, " lỗi!", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Main2Activity.this, "Lỗi sever"+error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param = new HashMap<>();
+
+                String pattern = "dd-MM-yyyy";
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+                Date now = new Date();
+                String t= sdf.format(now);
+                if (tinhtrang.equals("2")){
+                    param.put("tinhtrang","0");
+                    param.put("thoigiandiemdanh"," ");
+                    param.put("idTKB",idtkb);
+                }
+                if (tinhtrang.equals("0")){
+                    param.put("tinhtrang","1");
+                    param.put("thoigiandiemdanh",t);
+                    param.put("idTKB",idtkb);
+                }
+
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
     }
 
 }

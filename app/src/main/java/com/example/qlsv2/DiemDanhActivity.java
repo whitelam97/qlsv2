@@ -119,8 +119,6 @@ public class DiemDanhActivity extends AppCompatActivity {
             }
         });
 
-
-
         //click button đóng
         btndong.setOnClickListener(new View.OnClickListener()
         {
