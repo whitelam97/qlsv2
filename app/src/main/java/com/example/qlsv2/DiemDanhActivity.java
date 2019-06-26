@@ -207,6 +207,9 @@ public class DiemDanhActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     //select danh sach sv đã điểm danh
     class docJsonCheckSV extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -230,6 +233,8 @@ public class DiemDanhActivity extends AppCompatActivity {
             }
         }
     }
+
+
     //nut back
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -315,34 +320,13 @@ public class DiemDanhActivity extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> param = new HashMap<>();
-                String pattern = "dd-MM-yyyy";
-                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                Date now = new Date();
-                String t= sdf.format(now);
                 param.put("tinhtrang","1");
-                param.put("thoigiandiemdanh",t);
                 param.put("idTKB",idTKB);
                 return param;
             }
         };
         requestQueue.add(stringRequest);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 }

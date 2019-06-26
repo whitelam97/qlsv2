@@ -18,13 +18,17 @@
     <item android:title="Communicate">
         <menu>
             <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
                 android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
+                android:icon="@drawable/ic_note_black_24dp"
+                android:title="Ghi chú" />
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_info_black_24dp"
+                android:title="Giới thiệu ứng dụng" />
+            <item
+                android:id="@+id/nav_mail"
+                android:icon="@drawable/ic_mail_black_24dp"
+                android:title="Gửi phản hồi" />
         </menu>
     </item>
 

@@ -117,7 +117,7 @@
                             style="@android:style/Widget.Holo.Light.TextView"
                             android:layout_width="match_parent"
                             android:layout_height="50dp"
-                            android:layout_marginTop="20dp"
+                            android:layout_marginTop="5dp"
                             android:background="@drawable/bg_row_listview"
                             android:gravity="center"
                             android:letterSpacing="0.2"
@@ -125,6 +125,17 @@
                             android:textColor="@color/white"
                             android:textSize="18sp"
                             android:textStyle="bold" />
+
+                        <TextView
+                            android:id="@+id/textView4"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:paddingEnd="20dp"
+                            android:text="Quên mật khẩu ?"
+                            android:textAlignment="viewEnd"
+                            android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="italic" />
 
                     </LinearLayout>
 

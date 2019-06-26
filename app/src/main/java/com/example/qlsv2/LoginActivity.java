@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         spnquyen=findViewById(R.id.spnquyen);
         loadSpinnerData(urlquyen);
 
-        mscb.setText("ngantm");
-        matkhau.setText("3e5d638f3350fd2dd6912f30d31df86b");
+        mscb.setText("phucnd");
+        matkhau.setText("b39b4b9617c13eec3bb5498f851143a1");
 
         login.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onResponse(String response) {
                 try{
                     JSONArray jsonArray=new JSONArray(response);
-                    for(int i=0;i<jsonArray.length();i++){
+                    for(int i=3;i<jsonArray.length();i++){
                         JSONObject jsonObject1=jsonArray.getJSONObject(i);
                         String nhomnguoidung=jsonObject1.getString("nhomnguoidung");
                         quyenArrayList.add(nhomnguoidung);

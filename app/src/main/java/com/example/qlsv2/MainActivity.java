@@ -1,11 +1,15 @@
 package com.example.qlsv2;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.support.annotation.NonNull;
+import android.text.format.Formatter;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,10 +20,18 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
 import com.example.qlsv2.Adapter.LopHocAdapter;
 import com.example.qlsv2.Class.lophoc;
 import com.example.qlsv2.Class.url;
@@ -36,6 +48,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import es.dmoral.toasty.Toasty;
 
@@ -48,13 +62,20 @@ public class MainActivity extends AppCompatActivity
 
     ListView listView;
     ArrayList<lophoc> lophocArrayList;
+    ArrayList<lophoc> lophocArrayListcapnhattt;
     com.example.qlsv2.Class.url url= new url();
+    String urlupdatetinhtrang=url.getUrl()+"diemdanh/UpdateTinhTrang.php";
 
     private long backPressedTime;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+//        String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
+//        textView.setText(cip);
+
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -109,10 +130,18 @@ public class MainActivity extends AppCompatActivity
         final String sunday = shared3.getString("sunday", "");
         final String dayht = shared3.getString("ngayht", "");
 
+
         //set textview ngày tuan hien tai
         txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", Tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
+        lophocArrayListcapnhattt = new ArrayList<lophoc>();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new docJsonArray().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+            }
+        });
 
         listView = findViewById(R.id.lvlophoc);
         lophocArrayList = new ArrayList<lophoc>();
@@ -122,6 +151,7 @@ public class MainActivity extends AppCompatActivity
                 new docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayCB.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
+
         //click listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -136,7 +166,6 @@ public class MainActivity extends AppCompatActivity
                 editor.putString("idtkb",idtkb);
                 editor.putString("stttuan",stttuan);
                 editor.commit();
-
                 String pattern = "HH:mm";
                 SimpleDateFormat sdf = new SimpleDateFormat(pattern);
                 Date now = new Date();
@@ -156,6 +185,84 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
+
+
+    //đọc json lay arraylist de cap nhap lai tinh trang
+    class docJsonArray extends AsyncTask<String,Integer,String> {
+        //doinbackgroufd dung doc du lieu tren mang
+        @Override
+        protected String doInBackground(String... strings) {
+            return docnoidungtuURL(strings[0]);
+        }
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                JSONArray mangjson = new JSONArray(s);
+                for(int i=0;i<mangjson.length();i++){
+                    JSONObject lh= mangjson.getJSONObject(i);
+                    lophocArrayListcapnhattt.add(new lophoc(
+                            lh.getString("idTKB"),
+                            lh.getString("sttTuan"),
+                            lh.getString("thu"),
+                            lh.getString("tietBD"),
+                            lh.getString("sotiet"),
+                            lh.getString("daybu"),
+                            lh.getString("idlopHP"),
+                            lh.getString("idPhong"),
+                            lh.getString("tinhtrang"),
+                            lh.getString("idCB"),
+                            lh.getString("thoigiandiemdanh"),
+                            lh.getString("msCB"),
+                            lh.getString("hotenCB"),
+                            lh.getString("idHP"),
+                            lh.getString("mslopHP"),
+                            lh.getString("tenlopHP"),
+                            lh.getString("loailopHP"),
+                            lh.getString("soSV"),
+                            lh.getString("tuanhoc"),
+                            lh.getString("msPhong"),
+                            lh.getString("tenPhong"),
+                            lh.getString("nhahoc"),
+                            lh.getString("sttTang"),
+                            lh.getString("loaiPhong"),
+                            lh.getString("idHK"),
+                            lh.getString("msHK"),
+                            lh.getString("hocky"),
+                            lh.getString("namhoc"),
+                            lh.getString("thoigianBD"),
+                            lh.getString("thoigianKT"),
+                            lh.getString("tgbd"),
+                            lh.getString("tgkt"),
+                            lh.getString("tenDvi"),
+                            lh.getString("timenow")
+                    ));
+                }
+                String pattern = "HH:mm";
+                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
+                for (int i=0;i<lophocArrayListcapnhattt.size();i++){
+                    String tt= lophocArrayListcapnhattt.get(i).getTinhtrang();
+                    try {
+                        Date star = sdf.parse(lophocArrayListcapnhattt.get(i).getTgbd());
+                        Date end = sdf.parse(lophocArrayListcapnhattt.get(i).getTgkt());
+                        Date ht =sdf.parse(lophocArrayListcapnhattt.get(i).getTimenow());
+                        if (ht.after(end)&&tt.equals("0")){
+                            UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayListcapnhattt.get(i).getIdTKB());
+                        }
+                        if(ht.after(star)&&ht.before(end)&& tt.equals("-1")) {
+                            //mo khoa & set tinh trang lai la tiet hoc dang dien ra
+//                            Toast.makeText(Main2Activity.this,"kmkmk", Toast.LENGTH_SHORT).show();
+                            UpdateTinhtrang(urlupdatetinhtrang,"0",lophocArrayListcapnhattt.get(i).getIdTKB());
+                        }
+                    } catch (ParseException e){
+                        e.printStackTrace();
+                    }
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
 
     //select thoikhoabieu asyntask(đuongan, so, chuoi tra ve) đọc json đổ và arrayadapter
     class docJson extends AsyncTask<String,Integer,String> {
@@ -203,9 +310,9 @@ public class MainActivity extends AppCompatActivity
                             lh.getString("thoigianKT"),
                             lh.getString("tgbd"),
                             lh.getString("tgkt"),
-                            lh.getString("tenDvi")
-
-                    ));
+                            lh.getString("tenDvi"),
+                            lh.getString("timenow")
+                            ));
                 }
                 LopHocAdapter listadapter= new LopHocAdapter(
                         getApplicationContext(),
@@ -218,7 +325,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
     private static String docnoidungtuURL(String theUrl) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -239,7 +345,6 @@ public class MainActivity extends AppCompatActivity
         }
         return stringBuilder.toString();
     }
-
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);
@@ -252,7 +357,8 @@ public class MainActivity extends AppCompatActivity
     }
     //doudlick to exit
     @Override
-    public void onBackPressed() {
+    public void onBackPressed()
+    {
 
         //doubclick to exit
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
@@ -291,7 +397,6 @@ public class MainActivity extends AppCompatActivity
             final String hkht = shared1.getString("idHK", "");
             SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
             final String tuan = shared2.getString("sttTuan", "");
-            final String tuanhtai = shared2.getString("tuanht", "");
             listView = findViewById(R.id.lvlophoc);
             lophocArrayList = new ArrayList<lophoc>();
             runOnUiThread(new Runnable() {
@@ -301,7 +406,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
-
 
         return super.onOptionsItemSelected(item);
     }
@@ -334,6 +438,35 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
+    private void UpdateTinhtrang(String urlUpdateTTTG, final String ttrang, final String idTKB){
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        StringRequest stringRequest= new StringRequest(Request.Method.POST,urlUpdateTTTG,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        if(response.equals("success")){
+                            Toast.makeText(MainActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+                        }
+                        else
+                            Toast.makeText(MainActivity.this, "!", Toast.LENGTH_LONG).show();
+                    }
+                },
+                new Response.ErrorListener(){
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(MainActivity.this, "Lỗi sever"+error.toString(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+        ){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> param = new HashMap<>();
+                param.put("tinhtrang",ttrang);
+                param.put("idTKB",idTKB);
+                return param;
+            }
+        };
+        requestQueue.add(stringRequest);
+    }
 
 }
