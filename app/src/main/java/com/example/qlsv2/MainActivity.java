@@ -72,10 +72,10 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        listView = findViewById(R.id.lvlophoc);
 //        WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
 //        String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 //        textView.setText(cip);
-
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -117,11 +117,8 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         //Đổ dữ liệu ra lisview thoikhoabieu
-        SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
-        final String idCB = shared.getString("idCB", "");
         SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
         final String hkht = shared1.getString("idHK", "");
-
         SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
         final String tuan = shared2.getString("sttTuan", "");
         final String tuanhtai = shared2.getString("tuanht", "");
@@ -143,7 +140,27 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-        listView = findViewById(R.id.lvlophoc);
+        loadlistview();
+
+        //click listview
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                if (lophocArrayList.get(position).getTinhtrang().equals("0")){
+                    Intent intendiemdanh =new Intent(MainActivity.this,DiemDanhActivity.class);
+                    startActivity(intendiemdanh);
+                }
+            }
+        });
+
+    }
+    public void loadlistview(){
+        SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
+        final String idCB = shared.getString("idCB", "");
+        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+        final String hkht = shared1.getString("idHK", "");
+        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+        final String tuan = shared2.getString("sttTuan", "");
         lophocArrayList = new ArrayList<lophoc>();
         runOnUiThread(new Runnable() {
             @Override
@@ -151,42 +168,7 @@ public class MainActivity extends AppCompatActivity
                 new docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayCB.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
-
-        //click listview
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String idlophp= lophocArrayList.get(position).getIdlopHP();
-                String idtkb= lophocArrayList.get(position).getIdTKB();
-                String stttuan= lophocArrayList.get(position).getSttTuan();
-
-                SharedPreferences sharedclick = getSharedPreferences("tkbclick", Context.MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedclick.edit();
-                editor.putString("idlophp",idlophp);
-                editor.putString("idtkb",idtkb);
-                editor.putString("stttuan",stttuan);
-                editor.commit();
-                String pattern = "HH:mm";
-                SimpleDateFormat sdf = new SimpleDateFormat(pattern);
-                Date now = new Date();
-                String t= sdf.format(now);
-                try {
-                    Date star = sdf.parse(lophocArrayList.get(position).getTgbd());
-                    Date end = sdf.parse(lophocArrayList.get(position).getTgkt());
-                    Date ht =sdf.parse(t);
-                    if(ht.after(star)&&ht.before(end)) {
-                        Intent intendiemdanh =new Intent(MainActivity.this,DiemDanhActivity.class);
-                        startActivity(intendiemdanh);
-                    }
-                } catch (ParseException e){
-                    e.printStackTrace();
-                }
-            }
-        });
-
     }
-
-
     //đọc json lay arraylist de cap nhap lai tinh trang
     class docJsonArray extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -262,8 +244,6 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
-
-
     //select thoikhoabieu asyntask(đuongan, so, chuoi tra ve) đọc json đổ và arrayadapter
     class docJson extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -469,4 +449,12 @@ public class MainActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    public static void restartActivity(Activity act){
+
+        Intent intent=new Intent();
+        intent.setClass(act, act.getClass());
+        act.startActivity(intent);
+        act.finish();
+
+    }
 }
