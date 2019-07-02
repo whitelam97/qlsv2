@@ -3,7 +3,7 @@ package com.example.qlsv2;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -53,8 +53,8 @@ public class LoginActivity extends AppCompatActivity {
         txtimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mscb.setText("cangpa");
-                matkhau.setText("30e25409a9c409f0bddd0ccbf2700145");
+                mscb.setText("admin");
+                matkhau.setText("621198");
             }
         });
 
@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity {
         spnquyen=findViewById(R.id.spnquyen);
         loadSpinnerData(urlquyen);
 
-        mscb.setText("phucnd");
-        matkhau.setText("b39b4b9617c13eec3bb5498f851143a1");
+        mscb.setText("ngantm");
+        matkhau.setText("3e5d638f3350fd2dd6912f30d31df86b");
 
         login.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -119,7 +119,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "KHông có mạng!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Không có mạng!", Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         });

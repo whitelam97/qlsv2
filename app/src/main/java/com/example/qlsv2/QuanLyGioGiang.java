@@ -3,7 +3,7 @@ package com.example.qlsv2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
@@ -118,7 +118,6 @@ public class QuanLyGioGiang extends AppCompatActivity {
                                 tuanArrayList= new ArrayList<>();
                                 urltuan =url.getUrl()+"diemdanh/TuanBDTuanKT.php?hk="+hki+"&nh="+namhoc+"";
                                 loadSpinnertuan(urltuan);
-
                                 spntuan.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                                     @Override
                                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -193,7 +192,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
         SharedPreferences shared6= getSharedPreferences("tuandbkt", Context.MODE_PRIVATE);
         final String tuabd = shared6.getString("tuanBD", "");
         int bd= Integer.parseInt(tuabd);
-        int st =Integer.parseInt(sotuan[1])-bd;
+        int st =Integer.parseInt(sotuan[1])-bd-1;
 //                Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
         final String  urlQlggTuan= url.getUrl()+"diemdanh/LichBieuTuanTheoTenCB.php?hotenCB="+hotencb+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
         runOnUiThread(new Runnable() {
@@ -307,7 +306,6 @@ public class QuanLyGioGiang extends AppCompatActivity {
                     editor.putString("tuanBD",tuanbd);
                     editor.putString("tuanKT",tuankt);
                     editor.commit();
-
                     int bd=Integer.parseInt(tuanbd);
                     int kt=Integer.parseInt(tuankt);
                     for (int k=bd;k<=kt;k++){

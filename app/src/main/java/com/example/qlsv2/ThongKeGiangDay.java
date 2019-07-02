@@ -3,9 +3,8 @@ package com.example.qlsv2;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -29,7 +28,6 @@ import com.android.volley.toolbox.Volley;
 import com.example.qlsv2.Adapter.SinhVienAdapter;
 import com.example.qlsv2.Class.ngayhoc;
 import com.example.qlsv2.Class.sinhvien;
-import com.example.qlsv2.Class.tkb_tuan;
 import com.example.qlsv2.Class.url;
 
 import org.json.JSONArray;
@@ -79,7 +77,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
         ckball=findViewById(R.id.ckballtkgd);
         spnhknh=findViewById(R.id.spnhknh);
         spnlophp=findViewById(R.id.spnlophptkgd);
-        spnngayhoc=findViewById(R.id.spntuantkd);
+        spnngayhoc=findViewById(R.id.spnngay);
         listViewTKGD=findViewById(R.id.lvsvTKGD);
 
         SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
@@ -113,7 +111,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
                             public void onItemSelected(AdapterView<?> adapterView, View viiiew, int posi, long l) {
                                 idTKB= ngayhocsclasArray.get(posi).getIdTKB();
                                 final String idlopHP= ngayhocsclasArray.get(posi).getIdlopHP();
-
                                 //load sv đã được điểm danh
                                 svcheckArrayList = new ArrayList<String>();
                                 runOnUiThread(new Runnable() {
@@ -152,8 +149,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
                                         }
                                     }
                                 });
-
-
 
                                 //click button đóng
                                 btnthoat.setOnClickListener(new View.OnClickListener()
@@ -307,11 +302,8 @@ public class ThongKeGiangDay extends AppCompatActivity {
                         String idlopHP=jsonObject1.getString("idlopHP");
                         String idTKB=jsonObject1.getString("idTKB");
                         String ngayhoc=jsonObject1.getString("ngayhoc");
-
-
-
                         ngayhocsclasArray.add(new ngayhoc(idlopHP,idTKB,ngayhoc));
-//                        Kiem tra phải nhỏ hon ngay hien tai mới add vao spinner
+//                      Kiem tra phải nhỏ hon ngay hien tai mới add vao spinner
                         ngayhocArrayList.add(ngayhoc);
                     }
                     spnngayhoc.setAdapter(new ArrayAdapter<String>(ThongKeGiangDay.this,

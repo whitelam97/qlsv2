@@ -1,7 +1,7 @@
 package com.example.qlsv2.Adapter;
 
 import android.content.Context;
-import android.support.constraint.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,9 +13,6 @@ import android.widget.TextView;
 import com.example.qlsv2.R;
 import com.example.qlsv2.Class.lophoc;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class LopHocAdapter extends BaseAdapter {
