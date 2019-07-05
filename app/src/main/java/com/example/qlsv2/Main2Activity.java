@@ -152,7 +152,6 @@ public class Main2Activity extends AppCompatActivity
         final String sunday = shared3.getString("sunday", "");
         final String dayht = shared3.getString("ngayht", "");
 
-        Toast.makeText(this, tuan+hkht+tuanhtai, Toast.LENGTH_LONG).show();
         //set textview tuan hien tai
         txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
@@ -161,7 +160,7 @@ public class Main2Activity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJsonArray().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
 
@@ -243,7 +242,7 @@ public class Main2Activity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
     }
@@ -661,6 +660,19 @@ public class Main2Activity extends AppCompatActivity
         else
             if (id == R.id.action_reset) {
 //                LoadListview();
+                //Đổ dữ liệu ra listview
+                SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
+                final String hkht = shared1.getString("idHK", "");
+                SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
+                final String tuan = shared2.getString("sttTuan", "");
+
+                lophocArrayList = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                    }
+                });
                 spntinhtrang.setSelection(0);
                 return true;
         }

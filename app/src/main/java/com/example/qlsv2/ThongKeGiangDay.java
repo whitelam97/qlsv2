@@ -65,7 +65,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
     String urlxoasv=url.getUrl()+"diemdanh/XoaDiemDanhSV.php";
     String urlupdatedd=url.getUrl()+"diemdanh/SetTinhTrangTGTKB.php";
 
-    String idTKB;
+    String idTKB,idlopHP;
     String hk,nh;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,7 +86,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
         //spnhocky
         hknkArrayList=new ArrayList<>();
         loadSpinnerhknh(URLhknh);
-        //Click spiner đơn vị load spiner can bo
         spnhknh.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -95,9 +94,9 @@ public class ThongKeGiangDay extends AppCompatActivity {
                 hk =outpu[2];
                 nh=outpu[6];
                 LopHPArrayList= new ArrayList<>();
+                Toast.makeText(ThongKeGiangDay.this, ""+idCB+"-"+hk+"-"+nh, Toast.LENGTH_SHORT).show();
                 urlLopHP =url.getUrl()+"diemdanh/TenLopHPTheoHK.php?idCB="+idCB+"&hocky="+hk+"&namhoc="+nh+"";
                 loadSpinnerlophp(urlLopHP);
-
                 spnlophp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View viiew, int po, long l) {
@@ -109,8 +108,8 @@ public class ThongKeGiangDay extends AppCompatActivity {
                         spnngayhoc.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                             @Override
                             public void onItemSelected(AdapterView<?> adapterView, View viiiew, int posi, long l) {
-                                idTKB= ngayhocsclasArray.get(posi).getIdTKB();
-                                final String idlopHP= ngayhocsclasArray.get(posi).getIdlopHP();
+                                 idTKB= ngayhocsclasArray.get(posi).getIdTKB();
+                                 idlopHP= ngayhocsclasArray.get(posi).getIdlopHP();
                                 //load sv đã được điểm danh
                                 svcheckArrayList = new ArrayList<String>();
                                 runOnUiThread(new Runnable() {
@@ -125,7 +124,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new docJson().execute(url.getUrl() + "diemdanh/DanhSachSVThuocLopHP.php?idlopHP=" + idlopHP + "");
+                                        new docJson().execute(url.getUrl() + "diemdanh/DanhSachSVThuocLopHP.php?idlopHP="+idlopHP+"");
                                     }
                                 });
 
@@ -187,7 +186,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new docJsonCheckSV().execute(url.getUrl() + "diemdanh/SinhVienDaDiemdanh.php?idTKB=39759");
+                                        new docJsonCheckSV().execute(url.getUrl() + "diemdanh/SinhVienDaDiemdanh.php?idTKB=39323");
                                     }
                                 });
 
@@ -196,7 +195,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        new docJson().execute(url.getUrl() + "diemdanh/DanhSachSVThuocLopHP.php?idlopHP=3414");
+                                        new docJson().execute(url.getUrl() + "diemdanh/DanhSachSVThuocLopHP.php?idlopHP=3297");
                                     }
                                 });
                             }
@@ -228,11 +227,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
         }
-
-
     }
-
-
     //spnhocky
     private void loadSpinnerhknh(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
@@ -268,7 +263,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
             public void onResponse(String response) {
                 try{
                     JSONArray jsonArray=new JSONArray(response);
-                    for(int i=1;i<jsonArray.length();i++){
+                    for(int i=0;i<jsonArray.length();i++){
                         JSONObject jsonObject1=jsonArray.getJSONObject(i);
                         String tenlopHP=jsonObject1.getString("tenlopHP");
                         LopHPArrayList.add(tenlopHP);
@@ -297,7 +292,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
             public void onResponse(String response) {
                 try{
                     JSONArray jsonArray=new JSONArray(response);
-                    for(int i=1;i<jsonArray.length();i++){
+                    for(int i=0;i<jsonArray.length();i++){
                         JSONObject jsonObject1=jsonArray.getJSONObject(i);
                         String idlopHP=jsonObject1.getString("idlopHP");
                         String idTKB=jsonObject1.getString("idTKB");
@@ -333,10 +328,10 @@ public class ThongKeGiangDay extends AppCompatActivity {
         @Override
         protected void onPostExecute(String s) {
             try {
-                JSONArray mangjonsv = new JSONArray(s);
-                for(int i=0;i<mangjonsv.length();i++){
+                JSONArray man = new JSONArray(s);
+                for(int i=0;i<man.length();i++){
                     int k=0;
-                    JSONObject lh= mangjonsv.getJSONObject(i);
+                    JSONObject lh= man.getJSONObject(i);
                     for (int j=0;j<svcheckArrayList.size();j++)
                     {
                         if (svcheckArrayList.get(j).equals(lh.getString("idSV"))){
@@ -372,9 +367,8 @@ public class ThongKeGiangDay extends AppCompatActivity {
                         R.layout.row_diemdanhsinhvien,
                         sinhvienArrayList);
                 listViewTKGD.setAdapter(sinhVienAdapter);
-
             } catch (JSONException e) {
-//                Toast.makeText(DiemDanhActivity.this, "Lỗi", Toast.LENGTH_SHORT).show();
+                Toast.makeText(ThongKeGiangDay.this, "Lỗi", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
         }
@@ -429,7 +423,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
         }
         return super.onOptionsItemSelected(item);
     }
-
     //them xóa sv(điểm danh)
     private void themsv(String urladdsv, final String getidsv, final String getidtkb){
         RequestQueue requestQueue =Volley.newRequestQueue(this);

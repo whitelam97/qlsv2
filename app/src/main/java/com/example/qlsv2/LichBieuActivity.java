@@ -119,7 +119,7 @@ public class LichBieuActivity extends AppCompatActivity {
                         SharedPreferences shared6= getSharedPreferences("tuandbkt", Context.MODE_PRIVATE);
                         final String tuabd = shared6.getString("tuanBD", "");
                         int bd= Integer.parseInt(tuabd);
-                        int st =Integer.parseInt(sotuan[1])-bd;
+                        int st =Integer.parseInt(sotuan[1])-bd+1;
 //                      Toast.makeText(LichBieuActivity.this, st+"", Toast.LENGTH_SHORT).show();
                         final String  URLtkbtuan1= url.getUrl()+"diemdanh/LichBieuTuan.php?idCB="+idCB+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
 

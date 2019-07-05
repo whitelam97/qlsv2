@@ -58,11 +58,11 @@ public class HocPhanAdapter extends ArrayAdapter<hocphan> {
             tuanhoc.setImageResource(R.drawable.ic_clock);
             sosv.setImageResource(R.drawable.ic_group_black_24dp);
 
-            txttenHP.setText(hocphan.getMsHP()+" - "+ hocphan.getTenHP());
+            txttenHP.setText(hocphan.getTenlopHP());
             textViewtencb.setText(hocphan.getMslopHP());
             textViewhknh.setText("Học kỳ "+hocphan.getHocky()+", năm học "+hocphan.getNamhoc());
-            Integer integer =Integer.parseInt(hocphan.getBacDT());
-            if (integer==1){
+
+            if (hocphan.getBacDT().equals("1")){
                 textViewbacdt.setText("Đại học");
             }else textViewbacdt.setText("Cao đẳng");
             String s =hocphan.getLoailopHP();

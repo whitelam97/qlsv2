@@ -1,6 +1,7 @@
 package com.example.qlsv2;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
@@ -42,7 +43,7 @@ public class DiemDanhActivity extends AppCompatActivity {
     ArrayList<sinhvien> sinhvienArrayList;
     SinhVienAdapter sinhVienAdapter;
     com.example.qlsv2.Class.url url= new url();
-    String idlopHP,idTKB,sttTuan;
+    String idlopHP,idTKB;
 
     ArrayList<String> svcheckArrayList;
 
@@ -63,10 +64,9 @@ public class DiemDanhActivity extends AppCompatActivity {
         checkall = findViewById(R.id.ckball);
 
         //lấy id tkb
-        SharedPreferences shared = getSharedPreferences("tkbclick", Context.MODE_PRIVATE);
-        idlopHP = shared.getString("idlophp", "");
-        idTKB = shared.getString("idtkb", "");
-        sttTuan = shared.getString("stttuan", "");
+        Intent intent = getIntent();
+        idlopHP = intent.getStringExtra("idlophp");
+        idTKB = intent.getStringExtra("idtkb");
 
 
         //nut back
@@ -203,10 +203,6 @@ public class DiemDanhActivity extends AppCompatActivity {
             }
         }
     }
-
-
-
-
     //select danh sach sv đã điểm danh
     class docJsonCheckSV extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -230,8 +226,6 @@ public class DiemDanhActivity extends AppCompatActivity {
             }
         }
     }
-
-
     //nut back
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

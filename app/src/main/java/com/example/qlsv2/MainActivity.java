@@ -73,6 +73,7 @@ public class MainActivity extends AppCompatActivity
 //        String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 //        textView.setText(cip);
 
+
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
 //        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                new docJsonArray().execute(url.getUrl()+"diemdanh/LophocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
             }
         });
 
@@ -144,6 +145,8 @@ public class MainActivity extends AppCompatActivity
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (lophocArrayList.get(position).getTinhtrang().equals("0")){
                     Intent intendiemdanh =new Intent(MainActivity.this,DiemDanhActivity.class);
+                    intendiemdanh.putExtra("idlophp",lophocArrayList.get(position).getIdlopHP());
+                    intendiemdanh.putExtra("idtkb",lophocArrayList.get(position).getIdTKB());
                     startActivity(intendiemdanh);
                 }
             }
@@ -223,12 +226,12 @@ public class MainActivity extends AppCompatActivity
                         Date star = sdf.parse(lophocArrayListcapnhattt.get(i).getTgbd());
                         Date end = sdf.parse(lophocArrayListcapnhattt.get(i).getTgkt());
                         Date ht =sdf.parse(lophocArrayListcapnhattt.get(i).getTimenow());
+//                      Toast.makeText(MainActivity.this,star+"-"+end+"-"+ht, Toast.LENGTH_LONG).show();
                         if (ht.after(end)&&tt.equals("0")){
                             UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
                         if(ht.after(star)&&ht.before(end)&& tt.equals("-1")) {
                             //mo khoa & set tinh trang lai la tiet hoc dang dien ra
-//                            Toast.makeText(Main2Activity.this,"kmkmk", Toast.LENGTH_SHORT).show();
                             UpdateTinhtrang(urlupdatetinhtrang,"0",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
                     } catch (ParseException e){
@@ -445,12 +448,4 @@ public class MainActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
-    public static void restartActivity(Activity act){
-
-        Intent intent=new Intent();
-        intent.setClass(act, act.getClass());
-        act.startActivity(intent);
-        act.finish();
-
-    }
 }

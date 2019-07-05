@@ -8,7 +8,7 @@ public class sinhvien {
     String msLopCN;
     String cohoc;
     String tongbuoi;
-     Boolean  check;
+    Boolean  check;
 
     public sinhvien(String idSV, String mssv, String hotenSV, String msLopCN, String cohoc, String tongbuoi, Boolean check) {
         this.idSV = idSV;

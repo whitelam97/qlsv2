@@ -49,12 +49,16 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+
+//        Intent intent= new Intent(LoginActivity.this,MapsActivity.class);
+//        startActivity(intent);
+
         txtimage=findViewById(R.id.txtimage);
         txtimage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mscb.setText("admin");
-                matkhau.setText("621198");
+                mscb.setText("cangpa");
+                matkhau.setText("30e25409a9c409f0bddd0ccbf2700145");
             }
         });
 
@@ -70,8 +74,8 @@ public class LoginActivity extends AppCompatActivity {
         spnquyen=findViewById(R.id.spnquyen);
         loadSpinnerData(urlquyen);
 
-        mscb.setText("ngantm");
-        matkhau.setText("3e5d638f3350fd2dd6912f30d31df86b");
+        mscb.setText("baott");
+        matkhau.setText("29d4e34730d6d739291d06207c39c59f");
 
         login.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -119,7 +123,7 @@ public class LoginActivity extends AppCompatActivity {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(LoginActivity.this, "Không có mạng!", Toast.LENGTH_LONG).show();
+                Toast.makeText(LoginActivity.this, "Không có mạng!"+error, Toast.LENGTH_LONG).show();
                 error.printStackTrace();
             }
         });
@@ -296,7 +300,7 @@ public class LoginActivity extends AppCompatActivity {
         SharedPreferences sharedtuan= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
         String stttuan = sharedtuan.getString("sttTuan", "");
 
-        urlmosu = url.getUrl()+"diemdanh/MonToSunofNow.php?idHK="+idhk+"&sttTuan="+stttuan+"";
+        urlmosu = url.getUrl()+"diemdanh/MonToSunofNow.php?sttTuan="+stttuan+"&idHK="+idhk+"";
         Log.i("Hiteshurl",""+urlmosu);
         RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
         StringRequest stringRequest = new StringRequest(Request.Method.GET, urlmosu, new Response.Listener<String>() {
