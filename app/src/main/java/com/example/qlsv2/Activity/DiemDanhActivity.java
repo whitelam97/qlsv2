@@ -1,8 +1,6 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -24,6 +22,7 @@ import com.android.volley.toolbox.Volley;
 import com.example.qlsv2.Adapter.SinhVienAdapter;
 import com.example.qlsv2.Class.sinhvien;
 import com.example.qlsv2.Class.url;
+import com.example.qlsv2.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

@@ -1,4 +1,4 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -29,6 +29,7 @@ import com.example.qlsv2.Adapter.SinhVienAdapter;
 import com.example.qlsv2.Class.ngayhoc;
 import com.example.qlsv2.Class.sinhvien;
 import com.example.qlsv2.Class.url;
+import com.example.qlsv2.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;

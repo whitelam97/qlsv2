@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#fff"
+        android:orientation="vertical"
+        android:paddingBottom="3dp">
+
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
+            android:background="@drawable/bguser1"
+            android:paddingTop="10dp"
+            android:paddingBottom="8dp"
+            app:srcCompat="@drawable/logo1" />
+
+        <TextView
+            android:id="@+id/textView17"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="2dp"
+            android:text="QUẢN LÝ LỊCH BIỂU GIẢNG DẠY"
+            android:textAlignment="center"
+            android:textColor="@color/colorAccent"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg1"
+        android:orientation="vertical"
+        android:paddingTop="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txt"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:text="Khoa Công Nghệ Thông Tin, ĐH SPKT Vĩnh Long"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/textVie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:text="Tên đề tài :"
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/textView19"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:paddingLeft="8dp"
+                android:paddingTop="5dp"
+                android:text='" Xây dựng hệ thống quản lý tình hình dự lớp của sinh viên trên nền tảng Android ".'
+                android:textColor="@color/colorAccent"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtjj"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:text="Giáo viên hướng dẫn: "
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtjj2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="Lê Thị Hoàng Yến"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_white"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/txtjjf"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:text="Sinh viên thực hiên: "
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+
+            <TextView
+                android:id="@+id/txtjjf2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="5dp"
+                android:text="Bạch Văn Lãm"
+                android:textAlignment="center"
+                android:textColor="#000"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/bg_white"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/txtmmm"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:paddingTop="10dp"
+                android:text="Kính chúc quý Thầy, Cô dồi dào sức khỏe và gặt hái được nhiều thành công trong sự nghiệp."
+                android:textColor="@color/design_default_color_primary_dark"
+                android:textSize="18sp" />
+        </LinearLayout>
+
+        <ImageButton
+            android:id="@+id/ibtnback"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:background="@color/common_google_signin_btn_text_dark_disabled"
+            android:tint="@color/common_google_signin_btn_text_dark_default"
+            app:srcCompat="?attr/homeAsUpIndicator" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

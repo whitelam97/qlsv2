@@ -1,16 +1,22 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+
+import com.example.qlsv2.R;
 
 public class UserActivity extends AppCompatActivity {
 
     TextView txtten,txtid,txtgt,txtdc,txtns,txtdt,txtemail;
     SharedPreferences shared;
+    Button btndoimk;
 
 
     @Override
@@ -29,6 +35,15 @@ public class UserActivity extends AppCompatActivity {
         String gioitinh = shared.getString("gioitinh","");
         String ngaysinh = shared.getString("ngaysinh","");
         String tenDvi = shared.getString("tenDvi","");
+
+
+        btndoimk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(UserActivity.this,DoiMatKhau.class);
+                startActivity(intent);
+            }
+        });
 
 
         int gt=Integer.parseInt(gioitinh);
@@ -58,6 +73,7 @@ public class UserActivity extends AppCompatActivity {
         txtns =findViewById(R.id.txtngaysinh);
         txtdt =findViewById(R.id.txtdienthoai);
         txtemail =findViewById(R.id.txtemail);
+        btndoimk = findViewById(R.id.btndoimatkhauuser);
     }
 
     @Override

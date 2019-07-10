@@ -1,4 +1,4 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
 import android.content.Context;
 import android.content.Intent;
@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.qlsv2.Class.url;
+import com.example.qlsv2.R;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -34,7 +36,7 @@ import es.dmoral.toasty.Toasty;
 public class LoginActivity extends AppCompatActivity {
 
     EditText mscb, matkhau;
-    TextView signup,login,txtimage;
+    TextView signup,login,txtimage,txtquenmk;
     String pass,username;
     String urllogin,urlhocky,urltuan,urlmosu;
     com.example.qlsv2.Class.url url= new url();
@@ -50,8 +52,17 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
 
+        txtquenmk= findViewById(R.id.txtquenmk);
+        txtquenmk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(LoginActivity.this,QuenMatKhau.class);
+                startActivity(intent);
+            }
+        });
 //        Intent intent= new Intent(LoginActivity.this,MapsActivity.class);
 //        startActivity(intent);
+
 
         txtimage=findViewById(R.id.txtimage);
         txtimage.setOnClickListener(new View.OnClickListener() {
@@ -75,7 +86,7 @@ public class LoginActivity extends AppCompatActivity {
         loadSpinnerData(urlquyen);
 
         mscb.setText("baott");
-        matkhau.setText("29d4e34730d6d739291d06207c39c59f");
+        matkhau.setText("81dc9bdb52d04dc20036dbd8313ed055");
 
         login.setOnClickListener(new  View.OnClickListener() {
             @Override
@@ -272,7 +283,6 @@ public class LoginActivity extends AppCompatActivity {
                     String sttTuan = jsonObject1.getString("sttTuan");
                     String tuanht = jsonObject1.getString("tuanht");
 
-
                     SharedPreferences shared = getSharedPreferences("tuanht", Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = shared.edit();
                     editor.putString("sttTuan",sttTuan);
@@ -320,7 +330,6 @@ public class LoginActivity extends AppCompatActivity {
                     editor.putString("sunday",sunday);
                     editor.putString("ngayht",ngayht);
                     editor.commit();
-
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -331,12 +340,10 @@ public class LoginActivity extends AppCompatActivity {
                 Log.i("HiteshURLerror",""+error);
             }
         });
-
         requestQueue.add(stringRequest);
     }
     //doubclick to exit
     public void onBackPressed() {
-
         //doubclick to exit
         if (backPressedTime + 2000 > System.currentTimeMillis()) {
             super.onBackPressed();

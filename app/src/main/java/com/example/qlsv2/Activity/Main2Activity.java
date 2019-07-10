@@ -1,4 +1,4 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -10,6 +10,8 @@ import androidx.annotation.NonNull;
 //import androidx.constraintlayout.Constraints;
 import android.view.Gravity;
 import android.view.View;
+
+import com.example.qlsv2.R;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.constraintlayout.widget.Constraints;
@@ -20,9 +22,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -83,6 +88,8 @@ public class Main2Activity extends AppCompatActivity
 
     LopHocAdapter listadapter;
     String check;
+
+    private Dialog dialog1;
 
     String arrtinhtrang[]={
             "Tất cả",
@@ -911,6 +918,7 @@ public class Main2Activity extends AppCompatActivity
             Intent intentqlgg =new Intent(Main2Activity.this,QuanLyGioGiang.class);
             startActivity(intentqlgg);
         } else if (id == R.id.nav_share) {
+            showDialog();
 
         } else if (id == R.id.nav_send) {
 
@@ -989,6 +997,19 @@ public class Main2Activity extends AppCompatActivity
         };
         requestQueue.add(stringRequest);
     }
-
+    public void showDialog(){
+        dialog1 = new Dialog(Main2Activity.this);
+        dialog1.setContentView(R.layout.dialog_gioithieuapp);
+        ImageButton imageButton = dialog1.findViewById(R.id.ibtnback);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog1.dismiss();
+            }
+        });
+        dialog1.show();
+        Window window = dialog1.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
 
 }

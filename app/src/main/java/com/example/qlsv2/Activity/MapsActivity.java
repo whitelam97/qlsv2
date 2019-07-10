@@ -1,4 +1,4 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -18,6 +18,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.example.qlsv2.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -33,7 +34,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private ProgressDialog myProgress;
     private static final String MYTAG = "MYTAG";
 
-    // Mã yêu cầu uhỏi người dùng cho phép xem vị trí hiện tại của họ (***).
+    // Mã yêu cầu hỏi người dùng cho phép xem vị trí hiện tại của họ (***).
     // Giá trị mã 8bit (value < 256).
     public static final int REQUEST_ID_ACCESS_COURSE_FINE_LOCATION = 100;
 
@@ -81,7 +82,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             @Override
             public void onMapLoaded() {
-
                 // Đã tải thành công thì tắt Dialog Progress đi
                 myProgress.dismiss();
 

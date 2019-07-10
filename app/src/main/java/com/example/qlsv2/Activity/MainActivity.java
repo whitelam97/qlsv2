@@ -1,22 +1,30 @@
-package com.example.qlsv2;
+package com.example.qlsv2.Activity;
 
-import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
+
+import com.example.qlsv2.R;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+
+import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -64,15 +72,17 @@ public class MainActivity extends AppCompatActivity
 
     private long backPressedTime;
 
+    private Dialog dialog;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         listView = findViewById(R.id.lvlophoc);
-//        WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-//        String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
-//        textView.setText(cip);
+        WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+        String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
+        Toast.makeText(this, ""+cip, Toast.LENGTH_SHORT).show();
 
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -226,7 +236,7 @@ public class MainActivity extends AppCompatActivity
                         Date star = sdf.parse(lophocArrayListcapnhattt.get(i).getTgbd());
                         Date end = sdf.parse(lophocArrayListcapnhattt.get(i).getTgkt());
                         Date ht =sdf.parse(lophocArrayListcapnhattt.get(i).getTimenow());
-//                      Toast.makeText(MainActivity.this,star+"-"+end+"-"+ht, Toast.LENGTH_LONG).show();
+                      Toast.makeText(MainActivity.this,star+"-"+end+"-"+ht, Toast.LENGTH_LONG).show();
                         if (ht.after(end)&&tt.equals("0")){
                             UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
@@ -406,6 +416,7 @@ public class MainActivity extends AppCompatActivity
             Intent intentkgd =new Intent(MainActivity.this,ThongKeGiangDay.class);
             startActivity(intentkgd);
         }  else if (id == R.id.nav_share) {
+            showDialog();
 
         } else if (id == R.id.nav_send) {
 
@@ -448,4 +459,18 @@ public class MainActivity extends AppCompatActivity
         requestQueue.add(stringRequest);
     }
 
+    public void showDialog(){
+        dialog = new Dialog(MainActivity.this);
+        dialog.setContentView(R.layout.dialog_gioithieuapp);
+        ImageButton imageButton = dialog.findViewById(R.id.ibtnback);
+        imageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+            }
+        });
+        dialog.show();
+        Window window = dialog.getWindow();
+        window.setLayout(LinearLayout.LayoutParams.FILL_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+    }
 }
