@@ -171,11 +171,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
                 loadSpinnerCB(urlCB);
             }
         });
-
-
-
     }
-
     public void LoadlistviewQLGG(){
         tkbQlggTuanArrayList = new ArrayList<tkb_tuan>();
         tkb_tuan_Adapter tuanAdapter= new tkb_tuan_Adapter(
@@ -194,7 +190,7 @@ public class QuanLyGioGiang extends AppCompatActivity {
         final String tuabd = shared6.getString("tuanBD", "");
         int bd= Integer.parseInt(tuabd);
         int st =Integer.parseInt(sotuan[1])-bd+1;
-        Toast.makeText(QuanLyGioGiang.this, hotencb+st+hk+namhoc, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(QuanLyGioGiang.this, hotencb+st+hk+namhoc, Toast.LENGTH_SHORT).show();
         final String  urlQlggTuan= url.getUrl()+"diemdanh/LichBieuTuanTheoTenCB.php?hotenCB="+hotencb+"&sttTuan="+st+"&hocky="+hk+"&namhoc="+namhoc+"";
         runOnUiThread(new Runnable() {
             @Override
@@ -203,7 +199,6 @@ public class QuanLyGioGiang extends AppCompatActivity {
             }
         });
     }
-
     private void loadSpinnerDvi(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -234,7 +229,6 @@ public class QuanLyGioGiang extends AppCompatActivity {
         stringRequest.setRetryPolicy(policy);
         requestQueue.add(stringRequest);
     }
-
     private void loadSpinnerCB(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {

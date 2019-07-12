@@ -95,7 +95,7 @@ public class ThongKeGiangDay extends AppCompatActivity {
                 hk =outpu[2];
                 nh=outpu[6];
                 LopHPArrayList= new ArrayList<>();
-                Toast.makeText(ThongKeGiangDay.this, ""+idCB+"-"+hk+"-"+nh, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(ThongKeGiangDay.this, ""+idCB+"-"+hk+"-"+nh, Toast.LENGTH_SHORT).show();
                 urlLopHP =url.getUrl()+"diemdanh/TenLopHPTheoHK.php?idCB="+idCB+"&hocky="+hk+"&namhoc="+nh+"";
                 loadSpinnerlophp(urlLopHP);
                 spnlophp.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -285,7 +285,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
         stringRequest.setRetryPolicy(policy);
         requestQueue.add(stringRequest);
     }
-
     private void loadSpinnerNgayHoc(String url) {
         RequestQueue requestQueue= Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -318,7 +317,6 @@ public class ThongKeGiangDay extends AppCompatActivity {
         stringRequest.setRetryPolicy(policy);
         requestQueue.add(stringRequest);
     }
-
     //select danh sach sinh vien
     class docJson extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang

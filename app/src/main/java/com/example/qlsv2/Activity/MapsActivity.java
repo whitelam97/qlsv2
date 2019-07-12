@@ -1,12 +1,9 @@
 package com.example.qlsv2.Activity;
 
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.FragmentActivity;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
@@ -16,7 +13,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.qlsv2.R;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -28,13 +31,18 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
+import es.dmoral.toasty.Toasty;
 
-    private GoogleMap mMap;
+public class MapsActivity extends AppCompatActivity implements LocationListener {
+
+    private GoogleMap myMap;
     private ProgressDialog myProgress;
     private static final String MYTAG = "MYTAG";
 
-    // Mã yêu cầu hỏi người dùng cho phép xem vị trí hiện tại của họ (***).
+    String idlopHP, idTKB;
+
+    Button btndd;
+    // Mã yêu cầu uhỏi người dùng cho phép xem vị trí hiện tại của họ (***).
     // Giá trị mã 8bit (value < 256).
     public static final int REQUEST_ID_ACCESS_COURSE_FINE_LOCATION = 100;
 
@@ -44,89 +52,101 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
 
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        //nut back
+        if(getSupportActionBar()!=null){
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setDisplayShowHomeEnabled(true);
+        }
 
-        // Tạo Progress Bar
+        Intent intent = getIntent();
+        idlopHP = intent.getStringExtra("idlophp");
+        idTKB = intent.getStringExtra("idtkb");
+        btndd = findViewById(R.id.btndd);
+
+        // Create Progress Bar.
         myProgress = new ProgressDialog(this);
-        myProgress.setTitle("Map Loading ...");
-        myProgress.setMessage("Please wait...");
+        myProgress.setTitle("Đang lấy vị trí ...");
+        myProgress.setMessage("Vui lòng đợi!...");
         myProgress.setCancelable(true);
-
-        // Hiển thị Progress Bar
+        // Display Progress Bar.
         myProgress.show();
 
 
-    }
+        SupportMapFragment mapFragment
+                = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
 
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @SuppressLint("MissingPermission")
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-        // Lấy đối tượng Google Map ra:
-        mMap = googleMap;
-
-        // Thiết lập sự kiện đã tải Map thành công
-        mMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+        // Set callback listener, on Google Map ready.
+        mapFragment.getMapAsync(new OnMapReadyCallback() {
 
             @Override
-            public void onMapLoaded() {
-                // Đã tải thành công thì tắt Dialog Progress đi
-                myProgress.dismiss();
-
-                // Hiển thị vị trí người dùng.
-                askPermissionsAndShowMyLocation();
+            public void onMapReady(GoogleMap googleMap) {
+                onMyMapReady(googleMap);
             }
         });
 
-        mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-        mMap.getUiSettings().setZoomControlsEnabled(true);
+    }
 
-        mMap.setMyLocationEnabled(true);
+    private void onMyMapReady(GoogleMap googleMap) {
+        // Get Google Map from Fragment.
+        myMap = googleMap;
+        // Sét OnMapLoadedCallback Listener.
+        myMap.setOnMapLoadedCallback(new GoogleMap.OnMapLoadedCallback() {
+
+            @Override
+            public void onMapLoaded() {
+                // Map loaded. Dismiss this dialog, removing it from the screen.
+                myProgress.dismiss();
+                askPermissionsAndShowMyLocation();
+            }
+        });
+        try {
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    Activity#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+
+                // for Activity#requestPermissions for more details.
+            }
+        }catch (Exception e){
+            Toasty.warning(getBaseContext(), "Bạn chưa cấp quyền vị trí ", Toast.LENGTH_SHORT, true).show();
+        }
+        myMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        myMap.getUiSettings().setZoomControlsEnabled(true);
+        myMap.setMyLocationEnabled(true);
+
 
     }
 
+
     private void askPermissionsAndShowMyLocation() {
 
-        // Với API >= 23, bạn phải hỏi người dùng cho phép xem vị trí của họ.
+        // With API> = 23, you have to ask the user for permission to view their location.
         if (Build.VERSION.SDK_INT >= 23) {
             int accessCoarsePermission
                     = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
             int accessFinePermission
                     = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
 
-
             if (accessCoarsePermission != PackageManager.PERMISSION_GRANTED
                     || accessFinePermission != PackageManager.PERMISSION_GRANTED) {
-
-                // Các quyền cần người dùng cho phép.
+                // The Permissions to ask user.
                 String[] permissions = new String[]{Manifest.permission.ACCESS_COARSE_LOCATION,
                         Manifest.permission.ACCESS_FINE_LOCATION};
-
-                // Hiển thị một Dialog hỏi người dùng cho phép các quyền trên.
+                // Show a dialog asking the user to allow the above permissions.
                 ActivityCompat.requestPermissions(this, permissions,
                         REQUEST_ID_ACCESS_COURSE_FINE_LOCATION);
 
                 return;
             }
         }
-
-        // Hiển thị vị trí hiện thời trên bản đồ.
+        // Show current location on Map.
         this.showMyLocation();
     }
 
-    // Khi người dùng trả lời yêu cầu cấp quyền (cho phép hoặc từ chối).
+    // When you have the request results.
     @Override
     public void onRequestPermissionsResult(int requestCode,
                                            String permissions[], int[] grantResults) {
@@ -135,16 +155,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         //
         switch (requestCode) {
             case REQUEST_ID_ACCESS_COURSE_FINE_LOCATION: {
-                // Chú ý: Nếu yêu cầu bị bỏ qua, mảng kết quả là rỗng.
+                // Note: If request is cancelled, the result arrays are empty.
+                // Permissions granted (read/write).
                 if (grantResults.length > 1
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED
                         && grantResults[1] == PackageManager.PERMISSION_GRANTED) {
-
                     Toast.makeText(this, "Permission granted!", Toast.LENGTH_LONG).show();
-                    // Hiển thị vị trí hiện thời trên bản đồ.
+                    // Show current location on Map.
                     this.showMyLocation();
                 }
-                // Hủy bỏ hoặc từ chối.
+                // Cancelled or denied.
                 else {
                     Toast.makeText(this, "Permission denied!", Toast.LENGTH_LONG).show();
                 }
@@ -153,18 +173,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    // Tìm một nhà cung cấp vị trị hiện thời đang được mở.
+    // Find Location provider is openning.
     private String getEnabledLocationProvider() {
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
-        // Tiêu chí để tìm một nhà cung cấp vị trí.
+        // Criteria to find location provider.
         Criteria criteria = new Criteria();
 
-        // Tìm một nhà cung vị trí hiện thời tốt nhất theo tiêu chí trên.
+        // Returns the name of the provider that best meets the given criteria.
         // ==> "gps", "network",...
         String bestProvider = locationManager.getBestProvider(criteria, true);
 
         boolean enabled = locationManager.isProviderEnabled(bestProvider);
+
         if (!enabled) {
             Toast.makeText(this, "No location provider enabled!", Toast.LENGTH_LONG).show();
             Log.i(MYTAG, "No location provider enabled!");
@@ -173,34 +194,47 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return bestProvider;
     }
 
-
-    // Chỉ gọi phương thức này khi đã có quyền xem vị trí người dùng.
+    // Call this method only when you have the permissions to view a user's location.
     private void showMyLocation() {
 
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         String locationProvider = this.getEnabledLocationProvider();
-        Criteria criteria = new Criteria();
 
         if (locationProvider == null) {
             return;
         }
 
-        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    Activity#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for Activity#requestPermissions for more details.
+        // Millisecond
+        final long MIN_TIME_BW_UPDATES = 1000;
+        // Met
+        final float MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
+
+        Location myLocation = null;
+        try {
+            // This code need permissions (Asked above ***)
+            locationManager.requestLocationUpdates(
+                    locationProvider,
+                    MIN_TIME_BW_UPDATES,
+                    MIN_DISTANCE_CHANGE_FOR_UPDATES, (LocationListener) this);
+            // Getting Location.
+            // Lấy ra vị trí.
+            myLocation = locationManager
+                    .getLastKnownLocation(locationProvider);
+        }
+        // With Android API >= 23, need to catch SecurityException.
+        catch (SecurityException e) {
+            Toast.makeText(this, "Show My Location Error: " + e.getMessage(), Toast.LENGTH_LONG).show();
+            Log.e(MYTAG, "Show My Location Error:" + e.getMessage());
+            e.printStackTrace();
             return;
         }
-        Location myLocation = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false));
+
         if (myLocation != null) {
 
+
             LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
-            mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
+            myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
 
             CameraPosition cameraPosition = new CameraPosition.Builder()
                     .target(latLng)             // Sets the center of the map to location user
@@ -208,22 +242,43 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     .bearing(90)                // Sets the orientation of the camera to east
                     .tilt(40)                   // Sets the tilt of the camera to 30 degrees
                     .build();                   // Creates a CameraPosition from the builder
-            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+            myMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
             //lay khoag cach
-            double phamvi=distanceBetween2Points(myLocation.getLatitude(),myLocation.getLongitude(),10.250423, 105.962303);
-            Toast.makeText(this, "Pham vi cach truong "+phamvi, Toast.LENGTH_SHORT).show();
+            double phamvi=distanceBetween2Points(myLocation.getLatitude(),myLocation.getLongitude(),10.250376,105.9612984);
+//            Toast.makeText(this, "Pham vi cach truong "+phamvi, Toast.LENGTH_SHORT).show();
 
+            if (phamvi<=120){
+                // Thêm Marker cho Map:
+                MarkerOptions option = new MarkerOptions();
+                option.title("Vị trí của bạn");
+                option.snippet("Trong phạm vi của trường");
+                option.position(latLng);
+                Marker currentMarker = myMap.addMarker(option);
+                currentMarker.showInfoWindow();
+                btndd.setEnabled(true);
+            }
+            else {
+                // Thêm Marker cho Map:
+                MarkerOptions option = new MarkerOptions();
+                option.title("Vị trí của bạn");
+                option.snippet("Ngoài phạm vi của trường"+idlopHP+idTKB);
+                option.position(latLng);
+                Marker currentMarker = myMap.addMarker(option);
+                currentMarker.showInfoWindow();
+                btndd.setEnabled(false);
+            }
 
-            // Thêm Marker cho Map:
-            MarkerOptions option = new MarkerOptions();
-            option.title("My Location");
-            option.snippet(phamvi+"");
-            option.position(latLng);
-            Marker currentMarker = mMap.addMarker(option);
-            currentMarker.showInfoWindow();
-
-
+            btndd.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent1 = new Intent(MapsActivity.this, DiemDanhActivity.class);
+                    intent1.putExtra("idlophp",idlopHP);
+                    intent1.putExtra("idtkb",idTKB);
+                    startActivity(intent1);
+                    finish();
+                }
+            });
         } else {
             Toast.makeText(this, "Location not found!", Toast.LENGTH_LONG).show();
             Log.i(MYTAG, "Location not found");
@@ -245,7 +300,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         return d;
     }
 
-
     @Override
     public void onLocationChanged(Location location) {
 
@@ -264,5 +318,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onProviderDisabled(String s) {
 
+    }
+
+    //nut back
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id=item.getItemId();
+        if (id==android.R.id.home){
+            finish();
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

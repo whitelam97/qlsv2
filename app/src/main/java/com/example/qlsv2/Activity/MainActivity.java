@@ -78,6 +78,19 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Đổ dữ liệu ra lisview thoikhoabieu
+        Intent intent = getIntent();
+        final String monday = intent.getStringExtra("monday");
+        final String sunday = intent.getStringExtra("sunday");
+        final String dayht = intent.getStringExtra("ngayht");
+
+
+        final String tuan = intent.getStringExtra("sttTuan");
+        final String tuanhtai = intent.getStringExtra("tuanht");
+
+        final String hkht = intent.getStringExtra("idHK");
+
+
         listView = findViewById(R.id.lvlophoc);
         WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
@@ -123,17 +136,6 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Đổ dữ liệu ra lisview thoikhoabieu
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
-        final String tuanhtai = shared2.getString("tuanht", "");
-        SharedPreferences shared3= getSharedPreferences("mondaytosundaynow", Context.MODE_PRIVATE);
-        final String monday = shared3.getString("monday", "");
-        final String sunday = shared3.getString("sunday", "");
-        final String dayht = shared3.getString("ngayht", "");
-
 
         //set textview ngày tuan hien tai
         txttuanht=findViewById(R.id.txttuanht);
@@ -154,10 +156,11 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (lophocArrayList.get(position).getTinhtrang().equals("0")){
-                    Intent intendiemdanh =new Intent(MainActivity.this,DiemDanhActivity.class);
-                    intendiemdanh.putExtra("idlophp",lophocArrayList.get(position).getIdlopHP());
-                    intendiemdanh.putExtra("idtkb",lophocArrayList.get(position).getIdTKB());
-                    startActivity(intendiemdanh);
+                    Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                    intent.putExtra("idlophp",lophocArrayList.get(position).getIdlopHP());
+                    intent.putExtra("idtkb",lophocArrayList.get(position).getIdTKB());
+                    startActivity(intent);
+
                 }
             }
         });
@@ -236,7 +239,6 @@ public class MainActivity extends AppCompatActivity
                         Date star = sdf.parse(lophocArrayListcapnhattt.get(i).getTgbd());
                         Date end = sdf.parse(lophocArrayListcapnhattt.get(i).getTgkt());
                         Date ht =sdf.parse(lophocArrayListcapnhattt.get(i).getTimenow());
-                      Toast.makeText(MainActivity.this,star+"-"+end+"-"+ht, Toast.LENGTH_LONG).show();
                         if (ht.after(end)&&tt.equals("0")){
                             UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
@@ -314,6 +316,7 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
     private static String docnoidungtuURL(String theUrl) {
         StringBuilder stringBuilder = new StringBuilder();
         try {
@@ -382,10 +385,13 @@ public class MainActivity extends AppCompatActivity
             //Đổ dữ liệu ra lisview thoikhoabieu
             SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
             final String idCB = shared.getString("idCB", "");
+
             SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
             final String hkht = shared1.getString("idHK", "");
+
             SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
             final String tuan = shared2.getString("sttTuan", "");
+
             listView = findViewById(R.id.lvlophoc);
             lophocArrayList = new ArrayList<lophoc>();
             runOnUiThread(new Runnable() {
@@ -417,8 +423,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intentkgd);
         }  else if (id == R.id.nav_share) {
             showDialog();
-
-        } else if (id == R.id.nav_send) {
 
         }else if (id == R.id.hpgd) {
             Intent intenthpgd =new Intent(MainActivity.this,HocPhanGiangDayActivity.class);
@@ -458,7 +462,6 @@ public class MainActivity extends AppCompatActivity
         };
         requestQueue.add(stringRequest);
     }
-
     public void showDialog(){
         dialog = new Dialog(MainActivity.this);
         dialog.setContentView(R.layout.dialog_gioithieuapp);

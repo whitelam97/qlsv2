@@ -108,6 +108,22 @@ public class Main2Activity extends AppCompatActivity
 
         txttuanht=findViewById(R.id.txttuanht);
         listView = findViewById(R.id.lvlophoc);
+        Intent intent = getIntent();
+        //Đổ dữ liệu ra listview
+
+        final String hkht = intent.getStringExtra("idHK");
+
+        final String tuan = intent.getStringExtra("sttTuan");
+        final String tuanhtai = intent.getStringExtra("tuanht");
+
+        final String monday = intent.getStringExtra("monday");
+        final String sunday = intent.getStringExtra("sunday");
+        final String dayht = intent.getStringExtra("ngayht");
+
+
+        //set textview tuan hien tai
+        txttuanht=findViewById(R.id.txttuanht);
+        txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -148,20 +164,6 @@ public class Main2Activity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        //Đổ dữ liệu ra listview
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
-        final String tuanhtai = shared2.getString("tuanht", "");
-        SharedPreferences shared3= getSharedPreferences("mondaytosundaynow", Context.MODE_PRIVATE);
-        final String monday = shared3.getString("monday", "");
-        final String sunday = shared3.getString("sunday", "");
-        final String dayht = shared3.getString("ngayht", "");
-
-        //set textview tuan hien tai
-        txttuanht=findViewById(R.id.txttuanht);
-        txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
         lophocArrayList = new ArrayList<lophoc>();
         runOnUiThread(new Runnable() {
@@ -920,8 +922,6 @@ public class Main2Activity extends AppCompatActivity
         } else if (id == R.id.nav_share) {
             showDialog();
 
-        } else if (id == R.id.nav_send) {
-
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -977,7 +977,7 @@ public class Main2Activity extends AppCompatActivity
                            Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                         }
                         else
-                           Toast.makeText(Main2Activity.this, "!", Toast.LENGTH_LONG).show();
+                            Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener(){
