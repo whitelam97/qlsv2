@@ -426,10 +426,16 @@ public class MainActivity extends AppCompatActivity
             startActivity(intentkgd);
         }  else if (id == R.id.nav_share) {
             showDialog();
-
         }else if (id == R.id.hpgd) {
             Intent intenthpgd =new Intent(MainActivity.this,HocPhanGiangDayActivity.class);
             startActivity(intenthpgd);
+        }else if (id == R.id.nav_mail) {
+            Intent it = new Intent(Intent.ACTION_SEND);
+            it.putExtra(Intent.EXTRA_EMAIL, new String[]{"whitelam97@gmail.com"});
+            it.putExtra(Intent.EXTRA_SUBJECT,"GÓP Ý PHÁT TRIỂN HỆ THỐNG QUẢN LÝ LỊCH BIỂU GIẢNG DẠY TRÊN NỀN TẢNG ANDROID");
+            it.putExtra(Intent.EXTRA_TEXT,"Xin chào quản trị viên hệ thống! Tôi là ");
+            it.setType("message/rfc822");
+            startActivity(Intent.createChooser(it,"Chọn ứng dụng Mail"));
         }
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
