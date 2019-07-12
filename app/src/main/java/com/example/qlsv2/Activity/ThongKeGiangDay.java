@@ -1,6 +1,7 @@
 package com.example.qlsv2.Activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import androidx.appcompat.app.AppCompatActivity;
@@ -39,7 +40,9 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -67,11 +70,14 @@ public class ThongKeGiangDay extends AppCompatActivity {
     String urlupdatedd=url.getUrl()+"diemdanh/SetTinhTrangTGTKB.php";
 
     String idTKB,idlopHP;
-    String hk,nh;
+    String hk,nh,ngayht;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_thong_ke_giang_day);
+
+        Intent intent = getIntent();
+         ngayht = intent.getStringExtra("ngayht");
 
         btnok=findViewById(R.id.btnhoattat);
         btnthoat=findViewById(R.id.btndongtkgd);
@@ -297,9 +303,19 @@ public class ThongKeGiangDay extends AppCompatActivity {
                         String idlopHP=jsonObject1.getString("idlopHP");
                         String idTKB=jsonObject1.getString("idTKB");
                         String ngayhoc=jsonObject1.getString("ngayhoc");
-                        ngayhocsclasArray.add(new ngayhoc(idlopHP,idTKB,ngayhoc));
-//                      Kiem tra phải nhỏ hon ngay hien tai mới add vao spinner
-                        ngayhocArrayList.add(ngayhoc);
+
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+                        try {
+                            Date datehoc = sdf.parse(ngayhoc);
+                            Date dateht = sdf.parse(ngayht);
+                            if (datehoc.before(dateht)||datehoc.equals(dateht)){
+                                ngayhocsclasArray.add(new ngayhoc(idlopHP,idTKB,ngayhoc));
+                                ngayhocArrayList.add(ngayhoc);
+                            }
+                        } catch (ParseException e) {
+                            Toast.makeText(ThongKeGiangDay.this, e.toString(), Toast.LENGTH_SHORT).show();
+                            e.printStackTrace();
+                        }
                     }
                     spnngayhoc.setAdapter(new ArrayAdapter<String>(ThongKeGiangDay.this,
                             android.R.layout.simple_spinner_dropdown_item, ngayhocArrayList));

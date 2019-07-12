@@ -74,6 +74,8 @@ public class MainActivity extends AppCompatActivity
 
     private Dialog dialog;
 
+    String dayht;
+
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -82,7 +84,7 @@ public class MainActivity extends AppCompatActivity
         Intent intent = getIntent();
         final String monday = intent.getStringExtra("monday");
         final String sunday = intent.getStringExtra("sunday");
-        final String dayht = intent.getStringExtra("ngayht");
+         dayht = intent.getStringExtra("ngayht");
 
 
         final String tuan = intent.getStringExtra("sttTuan");
@@ -420,6 +422,7 @@ public class MainActivity extends AppCompatActivity
             startActivity(intentuser);
         } else if (id == R.id.nav_list) {
             Intent intentkgd =new Intent(MainActivity.this,ThongKeGiangDay.class);
+            intentkgd.putExtra("ngayht",dayht);
             startActivity(intentkgd);
         }  else if (id == R.id.nav_share) {
             showDialog();
