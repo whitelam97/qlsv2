@@ -17,6 +17,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.os.CountDownTimer;
 import android.text.format.Formatter;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -66,15 +67,17 @@ public class MainActivity extends AppCompatActivity
 
     ListView listView;
     ArrayList<lophoc> lophocArrayList;
+
     ArrayList<lophoc> lophocArrayListcapnhattt;
     com.example.qlsv2.Class.url url= new url();
-    String urlupdatetinhtrang=url.getUrl()+"diemdanh/UpdateTinhTrang.php";
 
+
+    String urlupdatetinhtrang=url.getUrl()+"diemdanh/UpdateTinhTrang.php";
     private long backPressedTime;
 
     private Dialog dialog;
 
-    String dayht;
+    String dayht, tuan,hkht;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -86,18 +89,16 @@ public class MainActivity extends AppCompatActivity
         final String sunday = intent.getStringExtra("sunday");
          dayht = intent.getStringExtra("ngayht");
 
-
-        final String tuan = intent.getStringExtra("sttTuan");
+         tuan = intent.getStringExtra("sttTuan");
         final String tuanhtai = intent.getStringExtra("tuanht");
-
-        final String hkht = intent.getStringExtra("idHK");
+         hkht = intent.getStringExtra("idHK");
 
 
         listView = findViewById(R.id.lvlophoc);
         WifiManager wifiManager= (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
         String cip = Formatter.formatIpAddress(wifiManager.getConnectionInfo().getIpAddress());
 
-        Toast.makeText(this, ""+cip, Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, ""+cip, Toast.LENGTH_SHORT).show();
 
         Toolbar toolbar = findViewById(R.id.toolbar1);
         setSupportActionBar(toolbar);
@@ -138,20 +139,26 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-
         //set textview ngày tuan hien tai
         txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", Tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
-        lophocArrayListcapnhattt = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
-            }
-        });
 
-        loadlistview();
+        CountDownTimer Timer = new CountDownTimer(3600000, 30000) {
+            public void onTick(long millisUntilFinished) {
+                lophocArrayListcapnhattt = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                    }
+                });
+                loadlistview();
+            }
+            public void onFinish() {
+                finish();
+            }
+        }.start();
 
         //click listview
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -167,14 +174,11 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
+
     }
     public void loadlistview(){
         SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
         final String idCB = shared.getString("idCB", "");
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
         lophocArrayList = new ArrayList<lophoc>();
         runOnUiThread(new Runnable() {
             @Override
@@ -183,6 +187,7 @@ public class MainActivity extends AppCompatActivity
             }
         });
     }
+
     //đọc json lay arraylist de cap nhap lai tinh trang
     class docJsonArray extends AsyncTask<String,Integer,String> {
         //doinbackgroufd dung doc du lieu tren mang
@@ -241,13 +246,18 @@ public class MainActivity extends AppCompatActivity
                         Date star = sdf.parse(lophocArrayListcapnhattt.get(i).getTgbd());
                         Date end = sdf.parse(lophocArrayListcapnhattt.get(i).getTgkt());
                         Date ht =sdf.parse(lophocArrayListcapnhattt.get(i).getTimenow());
-                        if (ht.after(end)&&tt.equals("0")){
+                        if (ht.after(end)&&!tt.equals("1")){
+                            //dang dien ra sang da khoa
                             UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
                         if(ht.after(star)&&ht.before(end)&& tt.equals("-1")) {
-                            //mo khoa & set tinh trang lai la tiet hoc dang dien ra
+                            //mo khoa & set tinh trang lai la tiet hoc dang dien ra(chua mo sang dang dien ra)
                             UpdateTinhtrang(urlupdatetinhtrang,"0",lophocArrayListcapnhattt.get(i).getIdTKB());
                         }
+                        //-1 chua mo
+                        //0 dang dien ra
+                        //1 da diem danh
+                        //2 da khoa
                     } catch (ParseException e){
                         e.printStackTrace();
                     }
@@ -376,6 +386,8 @@ public class MainActivity extends AppCompatActivity
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
+    //load lai listview
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -384,24 +396,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            //Đổ dữ liệu ra lisview thoikhoabieu
-            SharedPreferences shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
-            final String idCB = shared.getString("idCB", "");
-
-            SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-            final String hkht = shared1.getString("idHK", "");
-
-            SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-            final String tuan = shared2.getString("sttTuan", "");
-
-            listView = findViewById(R.id.lvlophoc);
-            lophocArrayList = new ArrayList<lophoc>();
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    new docJson().execute(url.getUrl()+"diemdanh/LophocTrongNgayCB.php?idCB="+idCB+"&sttTuan="+tuan+"&idHK="+hkht+"");
-                }
-            });
+          loadlistview();
         }
 
         return super.onOptionsItemSelected(item);
@@ -447,11 +442,11 @@ public class MainActivity extends AppCompatActivity
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.equals("success")){
-                            Toast.makeText(MainActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                            Toast.makeText(MainActivity.this, "!", Toast.LENGTH_LONG).show();
+//                        if(response.equals("success")){
+//                            Toast.makeText(MainActivity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+//                        }
+//                        else
+//                            Toast.makeText(MainActivity.this, "!", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener(){

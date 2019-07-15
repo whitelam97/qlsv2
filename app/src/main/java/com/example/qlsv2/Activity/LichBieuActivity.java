@@ -80,7 +80,7 @@ public class LichBieuActivity extends AppCompatActivity {
         final String monday = shared4.getString("monday", "");
         final String sunday = shared4.getString("sunday", "");
         final String dayht = shared4.getString("ngayht", "");
-        txttuan.setText("Tuần "+tuan+" (từ "+monday+" đến "+sunday+" )");
+        txttuan.setText("Tuần "+tuan+" (từ "+monday+" đến "+sunday+")");
 
         //lấy idCB
         SharedPreferences shared3= getSharedPreferences("canbo", Context.MODE_PRIVATE);

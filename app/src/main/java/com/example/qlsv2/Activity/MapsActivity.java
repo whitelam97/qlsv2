@@ -100,16 +100,15 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             }
         });
         try {
-            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    Activity#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-
-                // for Activity#requestPermissions for more details.
-            }
+            if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION);
+            }// TODO: Consider calling
+            //    Activity#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for Activity#requestPermissions for more details.
         }catch (Exception e){
             Toasty.warning(getBaseContext(), "Bạn chưa cấp quyền vị trí ", Toast.LENGTH_SHORT, true).show();
         }
@@ -231,8 +230,6 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
         }
 
         if (myLocation != null) {
-
-
             LatLng latLng = new LatLng(myLocation.getLatitude(), myLocation.getLongitude());
             myMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 13));
 
@@ -262,7 +259,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
                 // Thêm Marker cho Map:
                 MarkerOptions option = new MarkerOptions();
                 option.title("Vị trí của bạn");
-                option.snippet("Ngoài phạm vi của trường"+idlopHP+idTKB);
+                option.snippet("Ngoài phạm vi của trường");
                 option.position(latLng);
                 Marker currentMarker = myMap.addMarker(option);
                 currentMarker.showInfoWindow();

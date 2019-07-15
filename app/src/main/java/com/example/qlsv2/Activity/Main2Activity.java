@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 //import androidx.constraintlayout.Constraints;
+import android.os.CountDownTimer;
 import android.view.Gravity;
 import android.view.View;
 
@@ -87,7 +88,7 @@ public class Main2Activity extends AppCompatActivity
     String tinhtrangdacheck;
 
     LopHocAdapter listadapter;
-    String check;
+    String check,hkht,tuan;
 
     private Dialog dialog1;
 
@@ -110,12 +111,9 @@ public class Main2Activity extends AppCompatActivity
         listView = findViewById(R.id.lvlophoc);
         Intent intent = getIntent();
         //Đổ dữ liệu ra listview
-
-        final String hkht = intent.getStringExtra("idHK");
-
-        final String tuan = intent.getStringExtra("sttTuan");
+         hkht = intent.getStringExtra("idHK");
+         tuan = intent.getStringExtra("sttTuan");
         final String tuanhtai = intent.getStringExtra("tuanht");
-
         final String monday = intent.getStringExtra("monday");
         final String sunday = intent.getStringExtra("sunday");
         final String dayht = intent.getStringExtra("ngayht");
@@ -165,13 +163,20 @@ public class Main2Activity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
-        lophocArrayList = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+        CountDownTimer Timer = new CountDownTimer(7200000, 120000) {
+            public void onTick(long millisUntilFinished) {
+                lophocArrayList = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                    }
+                });
             }
-        });
+            public void onFinish() {
+                finish();
+            }
+        }.start();
 
         //load Spinner tinh trang
         spntinhtrang= findViewById(R.id.spntinhtrang);
@@ -185,6 +190,7 @@ public class Main2Activity extends AppCompatActivity
                 switch (i){
                     case 0:{
                         //all
+
                         LoadListview();
                         break;
                     }
@@ -221,7 +227,6 @@ public class Main2Activity extends AppCompatActivity
                             listadapter.notifyDataSetChanged();
                         }else
                             Toast.makeText(Main2Activity.this, "Xin chọn lại!", Toast.LENGTH_SHORT).show();
-
                         return false;
                     }
                 });
@@ -235,40 +240,38 @@ public class Main2Activity extends AppCompatActivity
         lophocBolocArrayListtt = new ArrayList<lophoc>();
     }
     public void LoadListview(){
-        //Đổ dữ liệu ra lisview thoikhoabieu
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
-        final String tuanhtai = shared2.getString("tuanht", "");
-        SharedPreferences shared3= getSharedPreferences("mondaytosundaynow", Context.MODE_PRIVATE);
-        final String monday = shared3.getString("monday", "");
-        final String sunday = shared3.getString("sunday", "");
-        final String dayht = shared3.getString("ngayht", "");
-        //set textview tuan hien tai
-        txttuanht.setText("Ngày "+dayht+", tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
-        lophocArrayListtt = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+        CountDownTimer Timer = new CountDownTimer(7200000, 120000) {
+            public void onTick(long millisUntilFinished) {
+                lophocArrayListtt = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Main2Activity.docJson().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                    }
+                });
             }
-        });
+            public void onFinish() {
+                finish();
+            }
+        }.start();
+
     }
     public  void loadlistviewtheotinhtrang(final String tihtrag){
-        //Đổ dữ liệu ra lisview thoikhoabieu
-        SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-        final String hkht = shared1.getString("idHK", "");
-        SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-        final String tuan = shared2.getString("sttTuan", "");
-        lophocArrayListtt = new ArrayList<lophoc>();
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                new Main2Activity.docJsontheotinhtrang().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTTTheoTinhTRang.php?sttTuan="+tuan+"&idHK="+hkht+"&tinhtrang="+tihtrag+"");
+        CountDownTimer Timer = new CountDownTimer(7200000, 120000) {
+            public void onTick(long millisUntilFinished) {
+                //Đổ dữ liệu ra lisview thoikhoabieu
+                lophocArrayListtt = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new Main2Activity.docJsontheotinhtrang().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTTTheoTinhTRang.php?sttTuan="+tuan+"&idHK="+hkht+"&tinhtrang="+tihtrag+"");
+                    }
+                });
             }
-        });
-
+            public void onFinish() {
+                finish();
+            }
+        }.start();
     }
     //đọc json load du liệu lên lisview
     class docJson extends AsyncTask<String,Integer,String> {
@@ -386,7 +389,7 @@ public class Main2Activity extends AppCompatActivity
                         Date star = sdf.parse(lophocArrayList.get(i).getTgbd());
                         Date end = sdf.parse(lophocArrayList.get(i).getTgkt());
                         Date ht =sdf.parse(lophocArrayList.get(i).getTimenow());
-                        if (ht.after(end)&&tt.equals("0")){
+                        if (ht.after(end)&&!tt.equals("1")){
                             UpdateTinhtrang(urlupdatetinhtrang,"2",lophocArrayList.get(i).getIdTKB());
                         }
                         if(ht.after(star)&&ht.before(end)&& tt.equals("-1")) {
@@ -519,7 +522,6 @@ public class Main2Activity extends AppCompatActivity
                         Loparraylist.get(j).getTgkt(),
                         Loparraylist.get(j).getTenDvi(),
                         Loparraylist.get(j).getTimenow()
-
                         ));
             }
         }
@@ -641,7 +643,7 @@ public class Main2Activity extends AppCompatActivity
             super.onBackPressed();
             return;
         } else {
-            Toasty.warning(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT, true).show();
+            Toasty.warning(getBaseContext(), "Nhấn một lần nữa để thoát!", Toast.LENGTH_SHORT, true).show();
 
         }
         backPressedTime = System.currentTimeMillis();
@@ -668,13 +670,15 @@ public class Main2Activity extends AppCompatActivity
         }
         else
             if (id == R.id.action_reset) {
+                lophocArrayList = new ArrayList<lophoc>();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+                    }
+                });
 //                LoadListview();
                 //Đổ dữ liệu ra listview
-                SharedPreferences shared1= getSharedPreferences("hocky", Context.MODE_PRIVATE);
-                final String hkht = shared1.getString("idHK", "");
-                SharedPreferences shared2= getSharedPreferences("tuanht", Context.MODE_PRIVATE);
-                final String tuan = shared2.getString("sttTuan", "");
-
                 lophocArrayList = new ArrayList<lophoc>();
                 runOnUiThread(new Runnable() {
                     @Override
@@ -972,18 +976,17 @@ public class Main2Activity extends AppCompatActivity
         };
         requestQueue.add(stringRequest);
     }
-
     private void UpdateTinhtrang(String urlUpdateTTTG, final String ttrang, final String idTKB){
         RequestQueue requestQueue =Volley.newRequestQueue(this);
         StringRequest stringRequest= new StringRequest(Request.Method.POST,urlUpdateTTTG,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        if(response.equals("success")){
-                           Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
-                        }
-                        else
-                            Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+//                        if(response.equals("success")){
+//                           Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
+//                        }
+//                        else
+//                            Toast.makeText(Main2Activity.this, "Điểm danh thành công!", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener(){

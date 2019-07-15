@@ -331,7 +331,7 @@ public class LoginActivity extends AppCompatActivity {
             super.onBackPressed();
             return;
         } else {
-            Toasty.warning(getBaseContext(), "Press back again to exit", Toast.LENGTH_SHORT, true).show();
+            Toasty.warning(getBaseContext(), "Nhấn một lần nữa để thoát!", Toast.LENGTH_SHORT, true).show();
 
         }
         backPressedTime = System.currentTimeMillis();
