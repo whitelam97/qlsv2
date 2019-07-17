@@ -14,7 +14,7 @@
 
 
     <ImageView
-        android:id="@+id/imgtiet"
+        android:id="@+id/imguser"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/nav_header_desc"

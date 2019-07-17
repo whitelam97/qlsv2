@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -25,6 +26,7 @@ import android.view.View;
 import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -64,6 +66,7 @@ public class MainActivity extends AppCompatActivity
     TextView txtemail,txttuanht;
     SharedPreferences shared;
 
+    ImageView imguser;
 
     ListView listView;
     ArrayList<lophoc> lophocArrayList;
@@ -82,6 +85,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         //Đổ dữ liệu ra lisview thoikhoabieu
         Intent intent = getIntent();
@@ -143,6 +147,13 @@ public class MainActivity extends AppCompatActivity
         txttuanht=findViewById(R.id.txttuanht);
         txttuanht.setText("Ngày "+dayht+", Tuần "+tuanhtai+" ("+monday+" - "+sunday+")");
 
+        lophocArrayListcapnhattt = new ArrayList<lophoc>();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                new docJsonArray().execute(url.getUrl()+"diemdanh/LopHocTrongNgayTT.php?sttTuan="+tuan+"&idHK="+hkht+"");
+            }
+        });
 
         CountDownTimer Timer = new CountDownTimer(3600000, 30000) {
             public void onTick(long millisUntilFinished) {
@@ -352,10 +363,18 @@ public class MainActivity extends AppCompatActivity
     public void navHeader(){
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);
-        shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
+        imguser= findViewById(R.id.imguser);
 
+        shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
         String username = shared.getString("hotenCB", "");
         String email = shared.getString("email", "");
+
+        SharedPreferences sharedimge= getSharedPreferences("Image", Context.MODE_PRIVATE);
+        String imgurl = sharedimge.getString("ImageDecode", "");
+
+        imguser.setImageBitmap(BitmapFactory
+                .decodeFile(imgurl));
+
         txtemail.setText(email);
         txtuser.setText(username);
     }
@@ -380,6 +399,7 @@ public class MainActivity extends AppCompatActivity
 //            super.onBackPressed();
 //        }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.\

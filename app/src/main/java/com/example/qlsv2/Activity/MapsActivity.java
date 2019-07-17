@@ -245,7 +245,7 @@ public class MapsActivity extends AppCompatActivity implements LocationListener 
             double phamvi=distanceBetween2Points(myLocation.getLatitude(),myLocation.getLongitude(),10.250376,105.9612984);
 //            Toast.makeText(this, "Pham vi cach truong "+phamvi, Toast.LENGTH_SHORT).show();
 
-            if (phamvi<=120){
+            if (phamvi<=200){
                 // Thêm Marker cho Map:
                 MarkerOptions option = new MarkerOptions();
                 option.title("Vị trí của bạn");

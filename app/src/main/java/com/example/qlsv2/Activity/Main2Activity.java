@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -28,6 +29,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
@@ -91,6 +93,8 @@ public class Main2Activity extends AppCompatActivity
     String check,hkht,tuan;
 
     private Dialog dialog1;
+
+    ImageView imgusertt;
 
     String arrtinhtrang[]={
             "Tất cả",
@@ -628,6 +632,7 @@ public class Main2Activity extends AppCompatActivity
         }
     }
     public void navHeader(){
+        imgusertt = findViewById(R.id.imgusertt);
         txtuser= findViewById(R.id.txtname);
         txtemail=findViewById(R.id.txtmail);
         shared= getSharedPreferences("canbo", Context.MODE_PRIVATE);
@@ -636,6 +641,13 @@ public class Main2Activity extends AppCompatActivity
         String email = shared.getString("email", "");
         txtemail.setText(email);
         txtuser.setText(username);
+
+        SharedPreferences sharedimge= getSharedPreferences("Image", Context.MODE_PRIVATE);
+        String imgurl = sharedimge.getString("ImageDecode", "");
+
+        imgusertt.setImageBitmap(BitmapFactory
+                .decodeFile(imgurl));
+
     }
     @Override
     public void onBackPressed() {
