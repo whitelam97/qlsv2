@@ -38,8 +38,10 @@ import java.util.Random;
 
 
 public class QuenMatKhau extends AppCompatActivity {
-    String GMail = "qlsvvlute2019@gmail.com"; //replace with you GMail
-    String GMailPass = "111194lam"; // replace with you GMail Password
+//    String GMail = "qlsvvlute2019@gmail.com"; //replace with you GMail
+//    String GMailPass = "111194lam"; // replace with you GMail Password
+    String GMail = "ScheduleManagementVLUTE@gmail.com"; //replace with you GMail
+    String GMailPass = "fit2017@vlute"; // replace with you GMail Password
     Button btnclear, btnnhanmk;
     EditText edtmail;
     com.example.qlsv2.Class.url url= new url();

@@ -10,6 +10,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 
+import com.example.qlsv2.Adapter.LopHocGVAdapter;
 import com.example.qlsv2.R;
 import com.google.android.material.navigation.NavigationView;
 import androidx.core.view.GravityCompat;
@@ -328,7 +329,7 @@ public class MainActivity extends AppCompatActivity
                             lh.getString("timenow")
                             ));
                 }
-                LopHocAdapter listadapter= new LopHocAdapter(
+                LopHocGVAdapter listadapter= new LopHocGVAdapter(
                         getApplicationContext(),
                         R.layout.row_lophoc,
                         lophocArrayList);

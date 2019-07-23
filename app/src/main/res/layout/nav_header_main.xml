@@ -18,7 +18,7 @@
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:contentDescription="@string/nav_header_desc"
-        app:srcCompat="@drawable/user3" />
+         />
 
 
     <TextView

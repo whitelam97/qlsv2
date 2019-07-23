@@ -1,7 +1,6 @@
 package com.example.qlsv2.Adapter;
 
 import android.content.Context;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,17 +9,19 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.qlsv2.R;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import com.example.qlsv2.Class.lophoc;
+import com.example.qlsv2.R;
 
 import java.util.List;
 
-public class LopHocAdapter extends BaseAdapter {
+public class LopHocGVAdapter extends BaseAdapter {
     private Context context;
     private int resource;
     private List<lophoc> arrContact;
 
-    public LopHocAdapter(Context context, int resource, List<lophoc> arrContact) {
+    public LopHocGVAdapter(Context context, int resource, List<lophoc> arrContact) {
         this.context = context;
         this.resource = resource;
         this.arrContact = arrContact;
@@ -43,17 +44,17 @@ public class LopHocAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder viewHolder;
         if (convertView == null) {
-            convertView = LayoutInflater.from(context).inflate(R.layout.row_lophoc, parent, false);
+            convertView = LayoutInflater.from(context).inflate(R.layout.row_lophocgv, parent, false);
             viewHolder = new ViewHolder();
             viewHolder.tvlop = (TextView) convertView.findViewById(R.id.txttenlophp);
-            viewHolder.tvgiaovien = (TextView) convertView.findViewById(R.id.txttengv);
-            viewHolder.tvtiet = (TextView) convertView.findViewById(R.id.txttg);
-            viewHolder.tvphong = (TextView) convertView.findViewById(R.id.txtvt);
-
-            viewHolder.imguser = (ImageView) convertView.findViewById(R.id.imggv);
-            viewHolder.imgplace = (ImageView) convertView.findViewById(R.id.imgvt);
-            viewHolder.imgtime = (ImageView) convertView.findViewById(R.id.imgtg);
-
+            viewHolder.tvgiaovien = (TextView) convertView.findViewById(R.id.txttenphong);
+            viewHolder.tvtiet = (TextView) convertView.findViewById(R.id.txtbacdt);
+            viewHolder.tvphong = (TextView) convertView.findViewById(R.id.txttiettkb);
+            viewHolder.tvtinhtrang = (TextView) convertView.findViewById(R.id.txtloailophp);
+            viewHolder.imguser = (ImageView) convertView.findViewById(R.id.imgphong);
+            viewHolder.imgplace = (ImageView) convertView.findViewById(R.id.imgtiet);
+            viewHolder.imgtime = (ImageView) convertView.findViewById(R.id.imgbacdt);
+            viewHolder.imgcheck = (ImageView) convertView.findViewById(R.id.imgloailophp);
             viewHolder.constraintLayout=(ConstraintLayout) convertView.findViewById(R.id.layoutdonglophoc);
             viewHolder.listView=(ListView) convertView.findViewById(R.id.lvlophoc);
             convertView.setTag(viewHolder);
@@ -63,29 +64,33 @@ public class LopHocAdapter extends BaseAdapter {
         lophoc contact = arrContact.get(position);
         viewHolder.tvlop.setText(contact.getTenlopHP());
         viewHolder.tvgiaovien.setText(contact.getHotenCB());
-        viewHolder.tvphong.setText(contact.getMsPhong());
+        viewHolder.tvphong.setText(contact.getMsPhong()+" - "+contact.getTenDvi());
         String loailpHP= contact.getLoailopHP();
 
         //xuly tinhtrang
         int tt=Integer.parseInt(contact.getTinhtrang());
         if (tt==-1){
             if (loailpHP.equals("LT")){
-                    viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lythuyet);
-                }else if (loailpHP.equals("TH")){
-                    viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_thuchanh);
-                }
+                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lythuyet);
+            }else if (loailpHP.equals("TH")){
+                viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_thuchanh);
+            }
+            viewHolder.tvtinhtrang.setText("Chưa mở");
 
 
         }
         if (tt==1){
+            viewHolder.tvtinhtrang.setText("Đã điểm danh");
             viewHolder.constraintLayout.setBackgroundResource(R.drawable.br_row_dadiemdanh);
 
         }
         if (tt==0){
+            viewHolder.tvtinhtrang.setText("Chưa điểm danh");
             viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_lopdangdienra);
 
         }
         if (tt==2){
+            viewHolder.tvtinhtrang.setText("Đã khóa");
             viewHolder.constraintLayout.setBackgroundResource(R.drawable.bg_row_dakhoa);
 
         }
@@ -159,13 +164,14 @@ public class LopHocAdapter extends BaseAdapter {
         viewHolder.imguser.setImageResource(R.drawable.ic_user);
         viewHolder.imgplace.setImageResource(R.drawable.ic_place_black_24dp);
         viewHolder.imgtime.setImageResource(R.drawable.ic_access_time_black_24dp);
+        viewHolder.imgcheck.setImageResource(R.drawable.ic_chat_black_24dp);
 
         return convertView;
     }
 
     public class ViewHolder {
-        TextView tvlop,tvgiaovien,tvtiet,tvphong;
-        ImageView imguser,imgplace,imgtime;
+        TextView tvlop,tvgiaovien,tvtiet,tvtinhtrang,tvphong;
+        ImageView imguser,imgplace,imgtime,imgcheck;
         ConstraintLayout constraintLayout;
         ListView listView;
     }

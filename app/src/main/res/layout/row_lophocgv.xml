@@ -20,18 +20,21 @@
             android:background="@drawable/br_row_dadiemdanh"
             android:descendantFocusability="afterDescendants"
             android:orientation="vertical"
-            android:padding="3dp">
+            android:padding="5dp"
+            >
 
             <TextView
                 android:id="@+id/txttenlophp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 android:text="Tên lớp"
                 android:textAlignment="center"
                 android:textAllCaps="true"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
+                android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
@@ -43,7 +46,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
                 android:layout_marginStart="2dp"
-                android:layout_marginTop="3dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="2dp"
                 android:background="@android:color/black"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -51,53 +54,67 @@
                 app:layout_constraintTop_toBottomOf="@id/txttenlophp" />
 
             <TextView
-                android:id="@+id/txttengv"
+                android:id="@+id/txttenphong"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
+                android:text="tên giáo viên"
+                android:textAlignment="viewStart"
+                android:textAllCaps="false"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.466"
+                app:layout_constraintStart_toEndOf="@+id/imgphong"
+                app:layout_constraintTop_toBottomOf="@+id/line" />
+
+            <TextView
+                android:id="@+id/txttiettkb"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:text="tên"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintStart_toEndOf="@+id/imgtg"
-                app:layout_constraintTop_toBottomOf="@+id/line" />
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/txttenphong"
+                app:layout_constraintStart_toEndOf="@+id/imgtiet"
+                app:layout_constraintTop_toBottomOf="@+id/txttenphong" />
 
             <TextView
-                android:id="@+id/txttg"
+                android:id="@+id/txtbacdt"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
                 android:text="date"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toStartOf="@+id/imgvt"
-                app:layout_constraintStart_toEndOf="@+id/imgtg"
-                app:layout_constraintTop_toBottomOf="@+id/txttengv" />
+                android:textSize="18sp"
+                app:layout_constraintEnd_toStartOf="@+id/imgloailophp"
+                app:layout_constraintStart_toEndOf="@+id/imgbacdt"
+                app:layout_constraintTop_toBottomOf="@+id/txttiettkb" />
 
             <TextView
-                android:id="@+id/txtvt"
+                android:id="@+id/txtloailophp"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginEnd="8dp"
-                android:text="C602"
+                android:layout_marginTop="8dp"
+                android:text="time"
                 android:textAlignment="viewStart"
                 android:textAllCaps="false"
                 android:textColor="@android:color/black"
-                android:textSize="16sp"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:textSize="18sp"
+                app:layout_constraintEnd_toEndOf="@+id/txttenphong"
                 app:layout_constraintStart_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txttengv" />
+                app:layout_constraintTop_toBottomOf="@+id/txttiettkb" />
 
             <androidx.constraintlayout.widget.Guideline
                 android:id="@+id/guideline2"
@@ -107,30 +124,39 @@
                 app:layout_constraintGuide_percent="0.50121653" />
 
             <ImageView
-                android:id="@+id/imggv"
+                android:id="@+id/imgtiet"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
                 app:layout_constraintStart_toStartOf="@+id/line"
-                app:layout_constraintTop_toBottomOf="@+id/line"
+                app:layout_constraintTop_toBottomOf="@+id/txttenphong"
+                app:srcCompat="@drawable/ic_place_black_24dp" />
+
+            <ImageView
+                android:id="@+id/imgphong"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="@+id/line"
+                app:layout_constraintTop_toTopOf="@+id/txttenphong"
                 app:srcCompat="@drawable/ic_user" />
 
             <ImageView
-                android:id="@+id/imgtg"
+                android:id="@+id/imgbacdt"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                app:layout_constraintStart_toStartOf="@+id/imggv"
-                app:layout_constraintTop_toTopOf="@+id/txttg"
+                app:layout_constraintStart_toStartOf="@+id/imgtiet"
+                app:layout_constraintTop_toTopOf="@+id/txtbacdt"
                 app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
             <ImageView
-                android:id="@+id/imgvt"
+                android:id="@+id/imgloailophp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="5dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
                 app:layout_constraintEnd_toStartOf="@+id/guideline2"
-                app:layout_constraintTop_toBottomOf="@+id/txttengv"
-                app:srcCompat="@drawable/ic_place_black_24dp" />
+                app:layout_constraintTop_toBottomOf="@+id/txttiettkb"
+                app:srcCompat="@drawable/ic_assignment_black_24dp" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
